@@ -14,8 +14,10 @@ echo "== Adding the PostgreSQL apt repository (PGDG) =="
 # postgresql-14 and have no pgvector package at all. postgresql-16 and
 # postgresql-16-pgvector only exist in the official PGDG repo. zstd is
 # installed here too since it's missing from the base image and the Ollama
-# installer below needs it to unpack its release archive.
-apt-get install -y -qq curl ca-certificates gnupg zstd
+# installer below needs it to unpack its release archive. pciutils
+# (lspci) is installed so the Ollama installer can detect the GPU itself
+# instead of just warning that it can't.
+apt-get install -y -qq curl ca-certificates gnupg zstd pciutils
 install -d /usr/share/postgresql-common/pgdg
 curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail \
     https://www.postgresql.org/media/keys/ACCC4CF8.asc
@@ -43,7 +45,14 @@ nohup ollama serve > /tmp/ollama.log 2>&1 &
 sleep 3
 
 echo "== Pulling the default model (qwen2.5:7b-instruct-q4_K_M) =="
+# Colab's cell output doesn't render the pull command's carriage-return
+# progress bar, so confirm success explicitly afterwards instead of relying
+# on that output.
 ollama pull qwen2.5:7b-instruct-q4_K_M
+echo "-- installed models --"
+ollama list
+echo "-- GPU detection (look for CUDA/GPU vs 'no compatible GPUs') --"
+grep -iE 'gpu|cuda' /tmp/ollama.log | tail -10 || echo "(no GPU-related lines found in the log)"
 
 echo "== Installing Python dependencies =="
 pip install -q -r requirements.txt

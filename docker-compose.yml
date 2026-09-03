@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: compliancegpt
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: compliancegpt
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U compliancegpt"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    # On the L4 dev box this picks up the GPU automatically via nvidia-container-toolkit.
+    # Pull a model once the container is up, e.g.: docker compose exec ollama ollama pull qwen2.5:7b-instruct-q4_K_M
+
+  api:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://compliancegpt:devpassword@postgres:5432/compliancegpt
+      OLLAMA_URL: http://ollama:11434
+      OLLAMA_MODEL: qwen2.5:7b-instruct-q4_K_M
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./docs:/app/docs
+      - ./data:/app/data
+
+volumes:
+  pgdata:
+  ollama_models:

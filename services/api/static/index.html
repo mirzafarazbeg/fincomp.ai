@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ComplianceGPT</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 h-screen flex flex-col">
+  <header class="border-b border-slate-200 bg-white px-4 py-3">
+    <h1 class="text-lg font-semibold">ComplianceGPT</h1>
+    <p class="text-sm text-slate-500">CAT / SEC / FINRA reporting assistant</p>
+  </header>
+
+  <main id="thread" class="flex-1 overflow-y-auto px-4 py-6 space-y-4 max-w-3xl w-full mx-auto"></main>
+
+  <footer class="border-t border-slate-200 bg-white px-4 py-3">
+    <form id="form" class="max-w-3xl mx-auto flex gap-2">
+      <input
+        id="question"
+        type="text"
+        placeholder="Ask about CAT reporting, error codes, field requirements..."
+        class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+        autocomplete="off"
+      />
+      <button
+        type="submit"
+        class="bg-slate-900 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-slate-700"
+      >Ask</button>
+    </form>
+  </footer>
+
+<script>
+const thread = document.getElementById('thread');
+const form = document.getElementById('form');
+const input = document.getElementById('question');
+
+function addMessage(role, html) {
+  const wrap = document.createElement('div');
+  wrap.className = role === 'user'
+    ? 'ml-auto max-w-[80%] bg-slate-900 text-white rounded-lg px-3 py-2 text-sm'
+    : 'mr-auto max-w-[80%] bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm space-y-2';
+  wrap.innerHTML = html;
+  thread.appendChild(wrap);
+  thread.scrollTop = thread.scrollHeight;
+  return wrap;
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function renderChunks(chunks) {
+  if (!chunks || !chunks.length) return '';
+  const items = chunks.map(c =>
+    `<li class="text-xs text-slate-500">${escapeHtml(c.citation)}</li>`
+  ).join('');
+  return `<details class="mt-1"><summary class="text-xs text-slate-400 cursor-pointer">${chunks.length} source(s)</summary><ul class="list-disc pl-4 mt-1 space-y-0.5">${items}</ul></details>`;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const question = input.value.trim();
+  if (!question) return;
+  addMessage('user', escapeHtml(question));
+  input.value = '';
+
+  const pending = addMessage('assistant', '<span class="text-slate-400">Thinking…</span>');
+
+  try {
+    const res = await fetch('/query', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, top_k: 5 }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    let body;
+    if (data.generated) {
+      body = `<div class="whitespace-pre-wrap">${escapeHtml(data.answer)}</div>`;
+    } else {
+      body = `<div class="text-slate-500 italic">No LLM configured — showing retrieved sources only.</div>`;
+    }
+    pending.innerHTML = body + renderChunks(data.chunks);
+  } catch (err) {
+    pending.innerHTML = `<span class="text-red-600">Error: ${escapeHtml(err.message)}</span>`;
+  }
+});
+</script>
+</body>
+</html>

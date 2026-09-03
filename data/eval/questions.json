@@ -1,0 +1,95 @@
+[
+  {
+    "question": "What does CAT error code 2019 mean?",
+    "expect": {
+      "document_title": "Error Code Catalog",
+      "section_ref": "E.2",
+      "text_contains": "destinationType"
+    }
+  },
+  {
+    "question": "What does CAT error code 1103 mean?",
+    "expect": {
+      "document_title": "Error Code Catalog",
+      "text_contains": "Duplicate File"
+    }
+  },
+  {
+    "question": "What is a retired error code?",
+    "expect": {
+      "document_title": "Error Code Catalog",
+      "text_contains": "retired"
+    }
+  },
+  {
+    "question": "What data type is the askPrice field in CAT reporting?",
+    "expect": {
+      "document_title": "Data Dictionary",
+      "section_ref": "askPrice"
+    }
+  },
+  {
+    "question": "What are the allowed values for actionType?",
+    "expect": {
+      "document_title": "Data Dictionary",
+      "section_ref": "actionType",
+      "text_contains": "COR"
+    }
+  },
+  {
+    "question": "What data type is timeInForce?",
+    "expect": {
+      "document_title": "Data Dictionary",
+      "section_ref": "timeInForce"
+    }
+  },
+  {
+    "question": "By when are Industry Members required to register for the CAT NMS System?",
+    "expect": {
+      "document_title": "CAT Tech Spec",
+      "text_contains": "June 27, 2019"
+    }
+  },
+  {
+    "question": "What is the CAT Reporter IMID used for in file submissions?",
+    "expect": {
+      "document_title": "CAT Tech Spec",
+      "text_contains": "CAT Reporter IMID"
+    }
+  },
+  {
+    "question": "What granularity must Industry Members use for CAT timestamps?",
+    "expect": {
+      "document_title": "CAT Tech Spec",
+      "text_contains": "milliseconds"
+    }
+  },
+  {
+    "question": "What is a Firm Designated ID (FDID)?",
+    "expect": {
+      "document_title": "CAT Tech Spec",
+      "text_contains": "FDID"
+    }
+  },
+  {
+    "question": "What CAT event does Broker 1 report when it originates a new principal order routed to an exchange?",
+    "expect": {
+      "document_title": "Reporting Scenarios",
+      "text_contains": "New Order"
+    }
+  },
+  {
+    "question": "What CAT reporting is required when a customer order is routed to an exchange as agent?",
+    "expect": {
+      "document_title": "Reporting Scenarios",
+      "text_contains": "agency"
+    }
+  },
+  {
+    "question": "How is CAT reporting handled when an order is routed between two Industry Members before execution on an exchange?",
+    "expect": {
+      "document_title": "Reporting Scenarios",
+      "text_contains": "routed"
+    }
+  }
+]

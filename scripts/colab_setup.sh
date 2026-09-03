@@ -12,8 +12,10 @@ set -euo pipefail
 echo "== Adding the PostgreSQL apt repository (PGDG) =="
 # Colab's base image is Ubuntu 22.04 (jammy), whose default repos only ship
 # postgresql-14 and have no pgvector package at all. postgresql-16 and
-# postgresql-16-pgvector only exist in the official PGDG repo.
-apt-get install -y -qq curl ca-certificates gnupg
+# postgresql-16-pgvector only exist in the official PGDG repo. zstd is
+# installed here too since it's missing from the base image and the Ollama
+# installer below needs it to unpack its release archive.
+apt-get install -y -qq curl ca-certificates gnupg zstd
 install -d /usr/share/postgresql-common/pgdg
 curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail \
     https://www.postgresql.org/media/keys/ACCC4CF8.asc

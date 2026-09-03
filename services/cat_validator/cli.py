@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import sys
 
-from services.cat_validator import linkage, parser, report, rules
+from services.cat_validator import engine, report
 
 
 def main() -> None:
@@ -18,8 +18,7 @@ def main() -> None:
     path = sys.argv[1]
     as_json = '--json' in sys.argv[2:]
 
-    records = parser.parse_file(path)
-    findings = rules.validate_records(records) + linkage.check_parent_child_linkage(records)
+    findings, _record_count = engine.validate_file(path)
 
     print(report.to_json(findings) if as_json else report.to_text(findings))
     if any(f.severity == 'Error' for f in findings):

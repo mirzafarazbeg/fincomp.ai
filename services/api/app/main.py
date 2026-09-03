@@ -61,9 +61,15 @@ def query(req: QueryRequest):
 
 @app.post('/validate')
 async def validate(file: UploadFile):
+    # Stream the upload to disk in chunks rather than file.read()'ing the
+    # whole thing into memory first - matters once files get into the
+    # hundreds of MB / millions of records (see engine.py's docstring and
+    # services/cat_validator/README.md's "Scale" section for why the actual
+    # validation logic was rebuilt to stream too).
     with tempfile.NamedTemporaryFile(suffix='.dat', delete=False) as tmp:
-        tmp.write(await file.read())
         tmp_path = tmp.name
+        while chunk := await file.read(1024 * 1024):
+            tmp.write(chunk)
     try:
         return cat_validate_client.validate_and_store(tmp_path, file.filename or 'upload')
     finally:

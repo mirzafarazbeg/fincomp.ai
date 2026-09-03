@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import sys
 
-from services.cat_validator import linkage, parser, rules
+from services.cat_validator import engine
 
 FIXTURES_DIR = 'data/eval/cat_validator'
 
@@ -67,8 +67,7 @@ def main() -> None:
     passed = 0
     for filename, check in CASES:
         path = f'{FIXTURES_DIR}/{filename}'
-        records = parser.parse_file(path)
-        findings = rules.validate_records(records) + linkage.check_parent_child_linkage(records)
+        findings, _record_count = engine.validate_file(path)
         ok = check(findings)
         status = 'PASS' if ok else 'FAIL'
         print(f'[{status}] {filename}')

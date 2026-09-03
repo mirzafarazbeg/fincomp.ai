@@ -103,3 +103,26 @@ def search(conn: psycopg.Connection, query_embedding, top_k: int = 5) -> list[di
     ).fetchall()
     cols = ['text', 'section_ref', 'section_title', 'page_no', 'document_title', 'distance']
     return [dict(zip(cols, row)) for row in rows]
+
+
+def search_by_section_title_prefix(conn: psycopg.Connection, prefix: str, limit: int = 3) -> list[dict]:
+    """Exact-match lookup by section_title prefix (e.g. "Error Code 2019:").
+
+    Dense vector similarity is bad at exact ID lookups: "error code 2019" and
+    "error code 2250" embed almost identically since only the number
+    differs, so a pure vector search can easily return a neighboring code
+    instead of the one actually asked about. This is the hybrid-search
+    short-circuit for that case - see services/rag/README.md.
+    """
+    rows = conn.execute(
+        """
+        SELECT dc.text, dc.section_ref, dc.section_title, dc.page_no, d.title AS document_title, 0.0 AS distance
+        FROM document_chunks dc
+        JOIN documents d ON d.id = dc.document_id
+        WHERE dc.section_title LIKE %s
+        LIMIT %s
+        """,
+        (prefix + '%', limit),
+    ).fetchall()
+    cols = ['text', 'section_ref', 'section_title', 'page_no', 'document_title', 'distance']
+    return [dict(zip(cols, row)) for row in rows]

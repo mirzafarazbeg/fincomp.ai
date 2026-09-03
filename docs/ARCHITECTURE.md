@@ -19,7 +19,7 @@ spec citation, not a model's opinion.
 
 - [x] Specs committed (`docs/specs/`)
 - [x] CAT Appendix E error code catalog extracted (`data/cat_reference/cat_error_codes.json`)
-- [ ] CAT Appendix G data dictionary extraction (field types/allowed values/required-conditional-optional)
+- [x] CAT Appendix G data dictionary extracted (`data/cat_reference/cat_data_dictionary.json`) — 132 fields, types + descriptions; Choice-field allowed values still need structuring (see `data/cat_reference/README.md`)
 - [ ] Everything below
 
 ## Build order

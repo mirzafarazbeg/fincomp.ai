@@ -1,0 +1,681 @@
+[
+  {
+    "field": "accountHolderType",
+    "data_type": "Choice",
+    "description": "Represents one of the following: The type of beneficial owner of the account for which an order was received or originated, or to which the shares/contracts are allocated. The type of account against which a customer/client order is being filled. The type of account associated with the firmDesignatedID. The type of account that originates this quote. Allowed Values A Institutional Customer \u2013 An institutional account as defined in FINRA Rule 4512(c) E Employee Account \u2013 An employee or associated person of the Industry Member or an employee or associated person of affiliated group companies F Foreign \u2013 A non-broker-dealer foreign affiliate or non-reporting foreign broker-dealer I Individual Customer \u2013 An account that does not meet the definition of \u201cinstitution\u201d as defined in FINRA Rule 4512(c) and is also not a proprietary account. O Market Making \u2013 See CAT FAQ C5 and CAT FAQ B68 V Firm agency average price account P Other Proprietary X Error Account \u2013 Error account of the firm"
+  },
+  {
+    "field": "actionType",
+    "data_type": "Choice",
+    "description": "Indicates whether the event is a new event, a correction, a repair or a record level deletion. Allowed Values NEW New Record COR Correction of events initiated by firms. RPR Repair of events for which a CAT error was provided in feedback DEL Record level delete instruction. When deleting a record, Industry Members must not restate the event that is being deleted. Refer to Section 7 for instructions on record level deletions."
+  },
+  {
+    "field": "affiliateFlag",
+    "data_type": "Boolean",
+    "description": "Indicates if the order is being routed to an affiliate or received from an affiliate of the Industry Member. For definition of affiliate, refer to CAT FAQ C4. Allowed Values true Order is routed to or received from an affiliate false Order is routed to or received from a non-affiliate"
+  },
+  {
+    "field": "aggregatedOrders",
+    "data_type": "Aggregated Orders",
+    "description": "Aggregated When an Industry Member generates a New Order event to represent one Orders or more customer/client orders, the aggregatedOrders field specifies the individual customer/client order(s) being represented. For each order being represented, the orderID and orderKeyDate must be provided. Quantity is required when a portion of the order\u2019s quantity is included in the aggregation. In instances when the aggregatedOrders field causes the event to exceed the maximum length (8190 bytes) allowed, one or more corresponding New Order Supplement events must be reported to capture the additional orders in the aggregatedOrders field. Refer to Appendix C for additional information on representative order linkage requirements.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "allocationID",
+    "data_type": "Text (64)",
+    "description": "The internal allocation ID assigned to the allocation event by the Industry Member. The combination of CATReporterIMID, allocationKeyDate, symbol and allocationID must be unique."
+  },
+  {
+    "field": "allocationInstructionTime",
+    "data_type": "Timestamp",
+    "description": "The date/time the time the allocation instruction was received."
+  },
+  {
+    "field": "allocationKeyDate",
+    "data_type": "Timestamp",
+    "description": "The date and time the allocationID was assigned."
+  },
+  {
+    "field": "allocationType",
+    "data_type": "Choice",
+    "description": "Indicates the type of allocation being made. Allowed Values for activity that is required to be reported to CAT: CUS Allocation to a custody account DVP Allocation to a DVP/RVP account CUSF Allocation to a custody account free of payment (if available in the booking system) DVPF Allocation to a DVP/RVP account free of payment (if available in the booking system) Refer to FAQ U26 for additional information. Allowed Values for activity that is being optionally reported to CAT CMTA Options CMTA FLP Correspondent Flip FRM An allocation to a firm owned or controlled account STO Step out/Step In OTH Other non-reportable transactions (e.g., option exercises, conversions, allocations to the account of a CAT Reporting Industry Member)"
+  },
+  {
+    "field": "askAggregatedOrders",
+    "data_type": "Aggregated Order Details",
+    "description": "Aggregated The orderID of each Customer/Client order being aggregated into a quote Order Details on the ask side.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "askPrice",
+    "data_type": "Price",
+    "description": "Price being asked in a quote."
+  },
+  {
+    "field": "askQty",
+    "data_type": "Whole Quantity",
+    "description": "being asked in a quote. Quantity"
+  },
+  {
+    "field": "atsDisplayInd",
+    "data_type": "Choice",
+    "description": "ATS only field. Indicates if the order is displayed outside of the ATS to subscribers only, or via publicly disseminated quotation data. Allowed Values S Order is displayed outside of the ATS to subscribers only A Order is displayed outside of the ATS to subscribers only, aggregated by price level on a timer basis Y Order is displayed outside of the ATS via public quotation N Order is not displayed outside of the ATS"
+  },
+  {
+    "field": "atsOrderType",
+    "data_type": "Array",
+    "description": "ATS only field. Unique identifier representing the specific order type(s) offered by the ATS. ATSs will provide their order types and handling instructions to CAT by submitting data dictionaries. Multiple atsOrderType values may be populated. BFMMFlag Boolean Identifies if a Short Sale order event relies on the bona fide Market Making exception under Rule 203(b)(2)(iii) of Regulation SHO. Only applicable to Market Makers on security-by-security basis. When populated with a value of true, the side field must be populated with the value of \u2018SS\u2019 or \u2018SX\u2019 and the accountHolderType field value must be \u2018O\u2019, \u2018P\u2019 or \u2018X\u2019. Allowed Values true Order is relying on the bona fide Market Making exception under Rule 203(b)(2)(iii) of Regulation SHO false Order is not relying on the bona fide Market Making exception under Rule 203(b)(2)(iii) of Regulation SHO"
+  },
+  {
+    "field": "bidAggregatedOrders",
+    "data_type": "Aggregated Order Details",
+    "description": "Aggregated The orderID of each Customer/Client order being aggregated into a quote Order Details on the bid side.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "bidPrice",
+    "data_type": "Price",
+    "description": "Price being bid in a quote."
+  },
+  {
+    "field": "bidQty",
+    "data_type": "Whole Quantity",
+    "description": "being bid in a quote. Quantity"
+  },
+  {
+    "field": "buyDetails",
+    "data_type": "Trade Side Details",
+    "description": "Trade Side Captures the Order Key and additional information for the Order Details associated with the buy side of a Trade Event. This field is in the format of Trade Side Details, a compound data type that consists of a list of fields (see Section 2.5 Data Types). The buyDetails field is only used in Trade events and Trade Supplement events to capture the buy side details of the trade. Refer to Section 4.11.1 for a list of fields. This field is applicable in Trade event if there is only one orderID associated with this side of the trade. If there is more than one orderID, the buyDetails must be populated in separate Trade Supplement events.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "cancelQty",
+    "data_type": "Real Quantity",
+    "description": "The quantity being cancelled. A value of zero means that the cancel was for the full remaining quantity. For example, if an order for 500 shares had partially executed 200 shares, and then the remainder was canceled, the cancelQty could contain either 300 or 0."
+  },
+  {
+    "field": "cancelFlag",
+    "data_type": "Boolean",
+    "description": "Represents instances when a trade was cancelled because the trade was rejected by the TRF/ADF/ORF, when a trade executed in a foreign market was cancelled, or when a customer/client fulfillment is cancelled. In such instances, set to \u2018true\u2019. Refer to CAT FAQ E25, CAT FAQ E29 and CAT FAQ E30 for additional information. Allowed Values true trade event was cancelled upon rejection by the TRF/ADF/ORF; or fulfillment Was cancelled. false trade event was not cancelled or cancellation was reported to the TRF/ADF/ORF; or fulfillment event was not cancelled."
+  },
+  {
+    "field": "cancelTimestamp",
+    "data_type": "Timestamp",
+    "description": "The time at which a trade or fulfillment was cancelled. Must be populated when cancelFlag is \u2018true\u2019."
+  },
+  {
+    "field": "capacity",
+    "data_type": "Choice",
+    "description": "Specifies the capacity in which the Industry Member acted. Allowed Values A Agency P Principal R Riskless Principal CATReporterIMID CAT Reporter The SRO-assigned identifier that an Industry Member uses to report to IMID CAT."
+  },
+  {
+    "field": "correspondentCRD",
+    "data_type": "Unsigned",
+    "description": "The CRD number of the related Introducing Broker or Correspondent firm, if applicable."
+  },
+  {
+    "field": "clearingFirm",
+    "data_type": "Unsigned",
+    "description": "The clearing number of the Industry Member\u2019s clearing firm."
+  },
+  {
+    "field": "clientDetails",
+    "data_type": "Fulfillment Side Details",
+    "description": "Fulfillment Specifies the Order Key and additional information for a Customer/Client Side Details Order for which a fulfillment event is associated. This field is in the format of Trade Side Details, a multi-dimensional array that consists of a list of fields (see Section 2.5 Data Types). The clientDetails field is only used in Equity and Option Order Fulfillment and Fulfillment Amendment Events to capture the customer or client side details of the Fulfillment. Refer to Section 4.12.1 for a List of fields.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "counterparty",
+    "data_type": "Industry Member ID",
+    "description": "Industry The counterparty to the trade. Member ID",
+    "data_type_inferred": true
+  },
+  {
+    "field": "custDspIntrFlag",
+    "data_type": "Boolean",
+    "description": "Indicates if a customer/client has instructed that a limit order must not be displayed or that a block size order must be displayed contrary to what is required by SEC Rule 604 or FINRA\u2019s Customer Limit Order Display Rule. Allowed Values true Customer/client has instructed that a limit order should not be displayed or that a block size order be displayed. false No instruction has been received from the customer/client that a limit order should not be displayed or that a block size order should be displayed."
+  },
+  {
+    "field": "deptType",
+    "data_type": "Choice",
+    "description": "Represents the internal department, unit or desk originating or accepting the order. Allowed Values A Agency \u2013 a desk or department where orders may be routed to other trading centers, either by a trading system or with the assistance of traders. This would include smart routers and algorithmic trading. ATS Alternative Trading System \u2013 A trading system that meets the definition of \u201cAlternative Trading System\u201d under Regulation ATS. DMA Direct Market Access \u2013 For CAT reporting purposes, represents when an Industry Member permits a customer to use a market participant identifier assigned to the Industry Member to route orders directly to market centers. SA Sponsored Access \u2013 For CAT reporting purposes, represents when an Industry Member permits another broker-dealer to use a market participant identifier assigned to the Industry Member to route orders directly to market centers. T Trading \u2013 A desk or department where orders are executed. This may be interpreted as either a trading system or a desk or department where orders are executed with the assistance of traders. O Other \u2013 A department that does not execute orders or route orders to other trading centers. The value of \u2018O\u2019 must only be used on events that are followed by Internal Route Accepted events."
+  },
+  {
+    "field": "deskOrderID",
+    "data_type": "Text (64)",
+    "description": "Internal identifier assigned to an internal route event by the Department or desk."
+  },
+  {
+    "field": "destination",
+    "data_type": "Industry Member ID",
+    "description": "Industry The SRO-assigned identifier of the Industry Member or Exchange to Member which an order was routed. ID/Exchange ID When destinationType is \u2018N\u2019 , this field is not required to be populated. When destinationType is F or O, this field is populated with the IMID of an Industry Member. When destinationType is \u2018D\u2019, this field is populated with one of the following: Allowed Values for a Display-only Facility Destination ADF FINRA Alternative Display Facility When destinationType is E, this field is populated with one of the following: Allowed Values for an Exchange Destination 24X 24X National Exchange AMER NYSE American Equities AMEROP NYSE American Options ARCA NYSE ARCA Equities ARCAOP NYSE ARCA Options BOX BOX Options Exchange BSTX Boston Security Token Exchange BX Nasdaq Texas Equities BYX Cboe BYX Exchange BZX Cboe BZX Equities BZXOP Cboe BZX Options C2 Cboe C2 Options CBOE Cboe Exchange (continued) CHX NYSE Texas (continued) EDGA Cboe EDGA Exchange EDGX Cboe EDGX Equities EDGXOP Cboe EDGX Options EMLD MIAX Emerald GEMX Nasdaq GEMX IEX Investor's Exchange IEXOP IEX Options ISE Nasdaq ISE LTSE Long Term Stock Exchange MEMX Members Exchange MEMXOP Members Options Exchange MIAMI Miami International Securities Exchange MRX Nasdaq MRX MX2OP MX2 Options NOBO Nasdaq Texas Options NOM Nasdaq Options NSDQ Nasdaq Stock NSX NYSE National NYSE The New York Stock Exchange PEARL MIAX PEARL PEARLEQ MIAX PEARL Equities PHLX Nasdaq PHLX Options PSX Nasdaq PHLX Equities SPHR MIAX Sapphire TXSE Texas Stock Exchange",
+    "data_type_inferred": true
+  },
+  {
+    "field": "destinationType",
+    "data_type": "Choice",
+    "description": "Indicates whether the destination of the route is an Industry Member, Display-only Facility, an exchange, a non-broker dealer, or a foreign broker-dealer. Not required for quotes routed to OTC Link ATS. Allowed Values for Quote Events D Display-only Facility operated by a national securities association F Industry Members Allowed Values for Order Events F Industry Members E Exchange N Foreign \u2013 Not applicable to options events O OTC Equity symbol in a foreign security was sent to another Industry Member, who may route the order to a foreign market for execution."
+  },
+  {
+    "field": "displayPrice",
+    "data_type": "Price",
+    "description": "ATS only field. The current price displayed by the ATS. Required when the ATS displays the order outside of the ATS."
+  },
+  {
+    "field": "displayQty",
+    "data_type": "Whole Quantity",
+    "description": "Whole ATS only field. The current quantity displayed by the ATS. Required when Quantity the ATS displays the order outside of the ATS.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "dupROIDCond",
+    "data_type": "Boolean",
+    "description": "On Order Route events and Route Modified events, indicates when a modification to an order previously routed to a national securities exchange requires the use of the original routedOrderID. On New Quote and Quote Received events, indicates when the quote event maintains the same routedQuoteID. Allowed Values true Event contains a duplicated routedOrderID or routedQuoteID false Event does not contain a duplicated routedOrderID or routedQuoteID DVPCustodianID Text (40) Applicable to DVP/RVP transactions. If the custodian is a US broker-dealer, this field must be populated with the clearing number of the custodian. If the custodian is a bank and is not a registered broker-dealer, this field must be populated with the DTC number of the bank. If there is no clearing number or DTC number, this field must be populated with a value of \u2018FOREIGN\u2019. Refer to CAT FAQ U19 for additional guidance."
+  },
+  {
+    "field": "electronicDupFlag",
+    "data_type": "Boolean",
+    "description": "Indicates whether the event is a duplicative electronic message of a manual event. Must be present if true. Allowed Values true Event is a duplicative electronic message false Event is not a duplicative electronic message"
+  },
+  {
+    "field": "electronicTimestamp",
+    "data_type": "Timestamp",
+    "description": "For manually executed events, the time at which the event was systematized. Must be reported at the most granular level an Industry Member's order handling or execution systems use to capture data for the reported event, with at least millisecond granularity."
+  },
+  {
+    "field": "errorROEID",
+    "data_type": "Unsigned",
+    "description": "The unique identifier assigned by CAT to an error record. Must be populated when the actionType is RPR."
+  },
+  {
+    "field": "eventTimestamp",
+    "data_type": "Timestamp",
+    "description": "The date and time the event occurred. If electronic, required to be reported at the most granular level an Industry Member's order handling or execution systems use to capture data for the reported event, with at least millisecond granularity. If manual, required to be reported in increments of at least one second. If the order is immediately systematized, required to be reported with at least millisecond granularity. For allocation reporting, refer to CAT FAQ U9 for additional information."
+  },
+  {
+    "field": "exchOriginCode",
+    "data_type": "Text (4)",
+    "description": "The code signifying the origin of the account exactly as sent to an Options exchange. Required for orders routed to an Options exchange. In instances where the market maker sends a market maker order through an options exchange protocol that does not require an exchange origin code, Industry Members must populate the exchOriginCode with MM. Refer to CAT FAQ E28 for additional information."
+  },
+  {
+    "field": "fillKeyDate",
+    "data_type": "Timestamp",
+    "description": "The date and time the fulfillmentID was assigned. Used to support uniqueness of a Fulfillment Key. If time is not needed to guarantee a unique Fulfillment Key, the time portion may be populated with zeros."
+  },
+  {
+    "field": "firmDesignatedID",
+    "data_type": "Text (40)",
+    "description": "See FDID guidance and FDID FAQs. A value of \u2018PENDING\u2019 must be populated in instances when an Industry Member receives an order for a new account and the new account number, on which the FDID is based, is not yet available. Once the FDID becomes available, the Industry Member must report the actual FDID in the firmDesignatedID field either in a New Order Supplement event (i.e., MENOS, MONOS, or MLOS event) or by submitting a correction to the original submission using actionType \u2018COR\u2019."
+  },
+  {
+    "field": "firmDetails",
+    "data_type": "Fulfillment Side Details",
+    "description": "Fulfillment Specifies the Order Key and additional information for a Firm Originated Side Details Order for which a fulfillment event is associated. Refer to Appendix C for representative order linkage requirements. It is in the format of Fulfillment Side Details, a compound data type that consists of a list of fields (see Section 2.5 Data Types). firmDetails is only used in Equity and Option Order Fulfillment, Order Fulfillment Supplement and Fulfillment Amendment Events to capture the firm side details of the Fulfillment. See Section 4.12.1 for list of fields. This field is applicable on an Order Fulfillment event if there is only one orderID associated with the firm side of the fulfillment. If there is more than one orderID associated with the firm side, the firmDetails must be populated in separate Order Fulfillment Supplement events.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "firmROEID",
+    "data_type": "Text (64)",
+    "description": "An identifier of the record assigned by the CAT Reporter. The firmROEID is composed based on the following format: <Event Date>_<firm ROE Identifier> The firmROEID must be unique for the Event Date and CAT Reporter IMID."
+  },
+  {
+    "field": "fulfillmentID",
+    "data_type": "Text (64)",
+    "description": "The identifier for the order fulfillment. The combination of CATReporterIMID, fillKeyDate, symbol and fulfillmentID must be unique per Order Fulfillment event."
+  },
+  {
+    "field": "fulfillmentLinkType",
+    "data_type": "Choice",
+    "description": "Specifies the type of the fulfillment. Refer to Appendix C for additional information on Representative Order linkage requirements. Allowed Values for Equity Events FOR Fulfillment on an order routed to a foreign destination, no linkage required Y Representative Order, linkage required YE Representative eligible - Order eligible for customer/client fills via an unlinked system (unlinked OMS-EMS or position fill) All Industry Members will be required to provide representative order linkages to unlinked OMS/EMS and position fill scenarios no later than January 31, 2028 due to the expiry of the exemptive relief granted by the SEC on January 23, 2026. YP Fill from pre-existing Principal order or pre-existing quote, linkage required YS Representative Order, linkage required, details provided in a supplement event Allowed Values for Option Events O Options Order Fulfillment OS Options Representative Order, linkage required, details provided in a supplement event OE Options Representative eligible \u2013 Representative option order eligible for customer/client fills via an unlinked system (unlinked OMS-EMS). All Industry Members will be required to provide representative order linkages to unlinked OMS/EMS and position fill scenarios no later than January 31, 2028 due to the expiry of the exemptive relief granted by the SEC on January 23, 2026. Allowed Values for Multi-Leg Events OML Multi-Leg Options Order Fulfillment OME Multi-Leg Options Representative Order \u2013 Multi-Leg representative order eligible for customer/client fills via an unlinked system (unlinked OMS-EMS). All Industry Members will be required to provide representative order linkages to unlinked OMS-EMS and position fill scenarios no later than January 31, 2028 due to the expiry of the exemptive relief granted by the SEC on January 23, 2026."
+  },
+  {
+    "field": "handlingInstructions",
+    "data_type": "Name/Value Pairs",
+    "description": "Name/Value Order handling instructions qualify the pricing, quantity, execution timing, Pairs or execution method of an order. All instructions that apply to the order must be included. The handlingInstructions field may contain zero or more order handling instruction codes. There is no limit to the number of handlingInstructions that may be populated in a record. Each attribute is either Boolean or Non-Boolean. A Boolean attribute is a Name and a Non-Boolean attribute is a Name with an accompanying paired Value. Multiple attributes are separated by a delimiter. For example, handlingInstructions are represented as follows in JSON: \"handlingInstructions\":{ \"AOK\": true, \"DISP\": 10.00, (continued) \"TMO\":\"20190419T092316.123456789\", (continued) \"AucResp\":\"AuctionID456\" \u201cDLVT\u201d:[\u201cMM1\u201d,\u201dMM2\u201d,\u201dMM3\u201d] } In CSV, handlingInstructions is represented as: AOK|DISP=10.00|TMO=20190419T092316.123456789|AucResp= AuctionID456|DLVT=MM1@MM2@MM3 Allowed Values (Boolean) ADD Add on Order \u2013 The customer/client adds additional shares to the order after it was fully executed. AIP Automated Investment Plan \u2013 Customer order was originated in accordance with an Automated Investment Plan. ALG Order was received or originated with instructions to work using a Trading Algorithm as defined in the Glossary. ALGMod Order originally received with instructions to work using a Trading Algorithm is later modified by the customer/client to use a different Trading Algorithm or change the settings of the trading algorithm ALGS Indicates that the event is part of an algorithmic strategy where the specific quantity may not be explicitly provided. ALO Add Liquidity Only AOK Auction or Kill \u2013 Order is to be executed only through an Exchange auction, and should be cancelled otherwise. Must be paired with handlingInstructions value of \u2018AUC\u2019 (see FAQ E32) or AucResp (see FAQ K3). AON All or None APCM Auction Price Cap Market \u2013 Indicates the contra party of a paired option order (see FAQ K20) is willing to match any price improvement. Also, see FAQ K26. AUC Auction \u2013 Single-sided order is received, originated or routed with instructions specifically designated for participation in an auction outside of the equity opening or closing cross (i.e., must not be used in combination with any of the following handlingInstructions values: \u2018LOO\u2019, \u2019LOC\u2019, \u2019MOO\u2019, \u2018MOC\u2019, \u2018IO),. Must not be used for paired orders (see FAQ K20 for definition), or in combination with \u2018AucResp\u2019 handlingInstructions value. (see FAQ K3). ATT Attributable \u2013 Order is routed to an exchange or ATS with instructions that the order is attributable. BIN Buy-In \u2013 An order originated pursuant to SEC or SRO rules (e.g., to comply with the close out requirements of Regulation SHO or FINRA Rule 4320, or the buy-in requirement of SEA Rule15c3-3). Refer to CAT FAQ B37. CAC Customer Accommodation Correction \u2013 \u2018COR\u2019 event was submitted to CAT as the result of a customer/client accommodation. Not to be used if the \u2018COR\u2019 event was submitted to correct an error by the Industry Member. CMC Contingent on Market Conditions CMPX This event represents an electronic message for a partial component of multi-leg event that was manually reported. (continued) Applicable to simple option orders, equity leg orders and multi- (continued) leg orders. See Section 5.2 for additional information. CND Conditional Order \u2013 An order where the terms and conditions of the order are derived from a related transaction. CPR Counterparty Restriction \u2013 Instructions that the order cannot be placed against certain counterparties. CTR OTC Link ATS Counter Message \u2013 Indicates that a New Order event, Order Route event or Order Accepted event represents the origination, route or receipt of a counter message through OTC Link ATS. CSC Contingent on Spread Condition \u2013 order with a condition that may cause the order to become active or inactive multiple times throughout the day. CSH Delivery Instruction \u2013 Cash trade settles on The same date. d Discretionary Peg DAC Delta-Adjusted at Close \u2013 A DAC order is an options order that executes during the trading day and, for which, the execution price is adjusted based on a delta value applied to the change in the price of the underlying reference price from the time of order execution to the market close. DIR Directed Orders \u2013 Orders that meet the definition of \u201cDirected Order\u201d under Regulation NMS (formerly defined under SEC Rule 11Ac1\u20136), or any other order that is received or originated with instructions to route to a particular venue for execution. DIV Dividend Reinvestment Order \u2013 Order is part of a dividend reinvestment program. DNI Do Not Increase DNR Do Not Reduce DNRT Do Not Route ERP Exchange Retail Provider \u2013 An order routed to an exchange to interact with retail orders as part of a retail pricing program. Pricing, display and counterparty eligibility for exchange retail provider orders are subject to the rules of the receiving exchange. EW Exchange for Physical Transaction \u2013 Equity trade component of an \u201cexchange for physical\u201d transaction. An exchange for physical transaction involves two parties simultaneously executing a futures contract and an equity transaction (for the securities covered by the futures contract), typically involving baskets that replicate common indices. FB Cboe Floor Broker \u2013 Indicates that the order is directed to a Cboe floor broker. FBA NYSE Floor Broker Algorithm \u2013 Indicates that the order is routed to the Exchange via a NYSE Floor Broker Algorithm. FOK Fill or Kill \u2013 Indicates the order is intended for immediate execution in its entirety, and if not executed in its entirety, the order is cancelled. FS Suspend FUT Futures Related Trade \u2013 Price or size of a cash order is contingent upon a related futures trade. G G Order \u2013 An order for an account covered by Exchange Act \u00a711(a) that relies on \u00a711(a)(1)(G) as an exemption to \u00a711(a)(1) GP Guaranteed Price \u2013 Order was received or originated with instructions to execute at a guaranteed price. (continued) IO Imbalance Only (continued) LOC Limit on Close \u2013 Instructs the trader to execute the order at the closing price provided that the closing price is at or within the limit specified LOO Limit on Open \u2013 Instructs trader to execute the order at the opening price provided that the opening price is at or within the limit specified. M Midpoint Peg MAX OTC Link ATS Message MAX instruction. Reflects the maximum number of shares to be executed between selected market makers. MOC Market on Close \u2013 Instructs the trader to execute the order at the closing last sale price of regular market hours. MOO Market on Open \u2013 Instructs the trader to execute the order at the opening print price of regular market hours. MRP Merger Related Transfer Position MTL Market to Limit \u2013 An order that is sent in as a market order to execute at the current best price. If the entire order does not immediately execute at the market price, the remainder of the order is resubmitted as a limit order with the limit price set to the price at which the original order executed. NAV Net Asset Value \u2013 Order was received or originated with instructions to execute at a Net Asset Value. NCTR OTC Link ATS No Counter \u2013 Indicates if an OTC Link ATS message cannot be countered with an inferior price. NH Not Held OCP OTC Link ATS instruction to cancel after partial execution. OFF Priced with specific offset OPO Opt Out of Locked Market OPT Options Related Trade \u2013 Price or size of a cash order is contingent upon a related option trade. This value must not be used on any multi-leg event (MLNO, MLOA, etc.). OVD Over the Day \u2013 Requires that a trader break up an order into several partial executions. The customer/client may specify the number of executions. P Market Peg PBG Price Based on Greeks \u2013 Indicates that the limit price is to be determined by Greeks or other formula based on market conditions. PCS Position Compression Service \u2013 Indicates that the order is to be executed through an exchange position compression service. PCTPX Indicates that the limit price provided in the price field is specified as a percentage of a benchmark price. For example, price=7.25 indicates that the limit price of the order is 7.25% of the closing price of the underlying security. PEG Indicates that the limit price is to be determined by a specific market price and/or volume factor or that the limit price should be determined pursuant to a specific formula. QCC Route was related to an order that was sent as a Qualified Contingent Cross. R Primary Peg RAR Routed as Received \u2013 For orders routed externally without any changes to the handling instructions, reporters may use this (continued) code to indicate that the handling instructions are equal to the (continued) received order. RLO Retail Liquidity Order \u2013 Order is routed to an exchange marked as a retail order. RSV Reserve Size Order \u2013 Required for an order for which a customer/client has authorized the public display of part of the full size of the order with the remainder held in reserve on an undisplayed basis to be displayed in whole or in part as the displayed part is executed. SCL Scale \u2013 Requires partial executions that are not more than a specified price increment apart. SLD Slide \u2013 Order is routed to an exchange or ATS with an instruction to adjust the limit price to prevent a locked or crossed market. SLL Strategy Legs Later \u2013 Indicates that the multi-leg strategy order contains multiple option legs, where at least one leg is known and the receiving party determines one or more of the leg(s). SLQ Stop Limit on Quote \u2013 An order that is triggered by a quotation at which point the stopped order becomes a limit order. SLR Delivery Instructions: Seller\u2019s Option \u2013 Trade settles on the date determined by a seller. SOQ Stop on Quote \u2013 An order that is triggered by a quotation at which point the stopped order becomes a market order. STOPF Stop Formula \u2013 Exact stop price is unknown because it is either based on an underlying condition or will be determined by the destination venue. STP Self Trade Prevention TS Trailing Stop TTF Tied to Fixed Income TTO Tied to a product that is not CAT reportable and is not identified through any other handlingInstructions value. TTS Tied to Stock TTSO Tied to Simple Option TTU Tied to Unlisted Option UNP Unpriced Quote on an Order Driven Market \u2013 Applicable to orders received by Global OTC. UNS Unsolicited Quote on an Order Driven Market \u2013 Applicable to orders received by Global OTC. WDP With Discretion Price \u2013 Discretion on Limit Price Within a Specified Range WRK Work \u2013 Leaves the time of execution to the trader\u2019s discretion; either full execution or partial executions are accepted. Allowed Values (Non-Boolean) AucResp Auction Response \u2013 Requires the Auction ID value for option orders originated in response to an exchange auction. If there is no Auction ID, must be populated with a value of \u2018NOAUCID\u2019. Data Type: Alphanumeric (40) APCL Auction Price Cap Limit \u2013 Indicates the price at which the contra party of a paired option order (see FAQ K20) is willing to match price improvement (e.g., APCL=14.75). Also, see FAQ K26. Data Type: Price (continued) CASH Cash Order \u2013 Instructs the Trader to buy or sell as much of a (continued) security as possible for the specified amount. Requires a numeric value that is greater than zero representing the notional amount of the order (e.g., CASH=1000.00). See CAT FAQ D10 for additional information. Data Type: Price DISP Display Price \u2013 The display price at the time the order is received, originated, or routed. Requires a numeric value greater than or equal to zero representing the display price (e.g., DISP=10.00). Data Type: Price DISQ Display Quantity \u2013 The display quantity at the time the order is received, originated, or routed. Requires a numeric value representing the display quantity (e.g., DISQ=1000). Data Type: Real Quantity DLVF OTC Link ATS Message delivered from instruction. On an Order Accepted event reflecting the receipt of an OTC Link Message from OTC Link ATS or an Order Route event reflecting the route of an OTC Link Message by OTC Link ATS, reflects the IMID of the Industry Member that the OTC Link Message was delivered from (e.g., DLVF=IMID). Data Type: Text 16 DLVT OTC Link ATS Message deliver to instruction. On an Order Route event reflecting the route of an OTC Link Message to OTC Link ATS or an Order Accepted event reflecting the receipt of an OTC Link Message by OTC Link ATS, reflects the IMID of the Industry Member that the OTC Link Message was delivered to (e.g., DLVT=IMID). Use the \u2018@\u2019 delimiter when submitting multiple IMIDs (e.g., DLVT=IMID1@IMID2@IMID3). Data Type: Array STOP Stop Price \u2013 Requires a Numeric value representing the stop price (e.g., STOP=17.95). Data Type: Price SW Stop Stock Transaction \u2013 Any transaction resulting from an order for which a member and another party agree that the order will be executed at a Stop Stock Price or better. Requires a numeric value greater than zero representing the agreed stop price. Data Type: Price SWQ Stop Stock Quantity \u2013 Requires a Numeric value greater than zero representing the quantity of shares of a stop stock order being stopped if the entire shares quantity of the order is not being stopped (e.g., SWQ=500). When SWQ is populated, SW must also be populated. Data Type: Whole Quantity TMO The trigger time of the Time Managed Order (e.g., the specific date and time that an order becomes a market or limit price order) - requires a Timestamp value. Data Type: Timestamp",
+    "data_type_inferred": true
+  },
+  {
+    "field": "infoBarrierID",
+    "data_type": "Text (20)",
+    "description": "The identifier of the information barrier in place for a trading unit that will meet the criteria of the \u201cno-knowledge\u201d exception in FINRA Rule 5320.02."
+  },
+  {
+    "field": "initiator",
+    "data_type": "Choice",
+    "description": "Indicates who initiated a cancel or modification request. If an order is modified or cancelled based on an implicit customer/client instruction, then the initiator field must be populated with a value of \u2018F\u2019. Refer to CAT FAQ B63 for additional information. Allowed Values C Initiated by the Customer/Client F Initiated by the firm"
+  },
+  {
+    "field": "institutionFlag",
+    "data_type": "Boolean",
+    "description": "Indicates if the account meets the definition of institution under FINRA Rule 4512(c). Allowed Values true Account meets the definition of institution under FINRA Rule 4512(c) false Account does not meet the definition of institution under FINRA Rule 4512(c)"
+  },
+  {
+    "field": "isoInd",
+    "data_type": "Choice",
+    "description": "Indicates the order was an Intermarket Sweep Order Allowed Values ISOD Intermarket Sweep Order \u2013 Day ISOI Intermarket Sweep Order \u2013 IOC NA Not applicable"
+  },
+  {
+    "field": "leavesQty",
+    "data_type": "Real Quantity",
+    "description": "The quantity remaining unfilled after the event. The meaning of this field is dependent on the event in which it's used. Refer to each individual event definition for more detail."
+  },
+  {
+    "field": "legDetails",
+    "data_type": "Leg Details",
+    "description": "Captures the leg level details for each leg associated with a Multi-Leg order event. This field is in the format of Leg Details, a compound data type that consists of a list of fields (see Section 2.5 Data Types). The legDetails field is used in all Multi-Leg order events to capture the leg level details of each event. Refer to Section 5.2 for a the legDetails required in each Multi-Leg order event. If there are more legDetails than can be represented in one event, any additional legDetails must be populated in separate Multi-Leg Order Supplement events."
+  },
+  {
+    "field": "legRatioQuantity",
+    "data_type": "Real Quantity",
+    "description": "The ratio of quantity for this individual leg relative to the entire multi-leg security. May be represented as the entire quantity for the leg, or as the lowest common factor."
+  },
+  {
+    "field": "legRefID",
+    "data_type": "Text (64)",
+    "description": "Unique identifier of the leg, optionally populated in the legDetails."
+  },
+  {
+    "field": "manualFlag",
+    "data_type": "Boolean",
+    "description": "Indicates whether an order was received or handled manually. Allowed Values true Event was received/handled manually false Event was not received/handled manually"
+  },
+  {
+    "field": "manualOrderID",
+    "data_type": "Text (64)",
+    "description": "In cases when a duplicative electronic message is reported, the manualOrderID is the orderID of the related manual order."
+  },
+  {
+    "field": "manualOrderKeyDate",
+    "data_type": "Timestamp",
+    "description": "In cases when a duplicative electronic message is reported, the manualOrderKeyDate is the orderKeyDate of the related manual order."
+  },
+  {
+    "field": "marketCenterID",
+    "data_type": "Choice",
+    "description": "For equities MEOT events, the national securities exchange or transaction reporting system operated by a registered securities association where the trade was reported. For options MOOT events, the options exchange where the trade occurred. Allowed Values FINRA Transaction Reporting Systems D ADF DC FINRA/Nasdaq Chicago Trade Reporting Facility DN FINRA/NYSE Trade Reporting Facility L FINRA/Nasdaq Trade Reporting Facility O OTC Reporting Facility National Securities Exchanges A NYSE MKT B Nasdaq Texas BF Boston Security Token Exchange C NYSE National F Non\u2013US Exchange G 24X National Exchange H MIAX PEARL Equities I International Securities Exchange J Cboe EDGA Exchange K Cboe EDGX Exchange LT Long Term Stock Exchange M NYSE Texas N New York Stock Exchange P NYSE Arca Q The Nasdaq Stock Market TXSE Texas Stock Exchange U Members Exchange V Investors Exchange W Cboe Stock Exchange X Nasdaq PSX Y Cboe BYX Exchange Z Cboe BZX Exchange Options Exchanges ARCAOP NYSE ARCA Options AMEROP NYSE American Options BOX BOX Options Exchange BZXOP Cboe BZX Options Exchange C2 Cboe C2 Options CBOE Cboe Exchange (continued) EDGXOP Cboe EDGX Options (continued) EMLD MIAX Emerald GEMX Nasdaq GEMX IEXOP IEX Options ISE Nasdaq ISE MEMXOP Members Options Exchange MIAMI Miami International Securities Exchange MRX Nasdaq MRX MX2OP MX2 Options NOBO Nasdaq Texas Options NOM Nasdaq Options Market PEARL MIAX PEARL PHLX Nasdaq PHLX Options SPHR MIAX Sapphire"
+  },
+  {
+    "field": "minQty",
+    "data_type": "Whole Quantity",
+    "description": "Whole Indicates the minimum quantity allowed to be executed in a single Quantity transaction. The minQty is required to be populated when it is applicable to the order. This means that it is only required to be reported when a customer or a routing firm explicitly specifies a minimum quantity.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "mpStatusCode",
+    "data_type": "Choice",
+    "description": "Market Participant Status Code- indicates if the market maker's quote was open or closed. Allowed Values O Open C Close"
+  },
+  {
+    "field": "multiLegInd",
+    "data_type": "Boolean",
+    "description": "Indicates when the immediately preceding event in the order life cycle is a Multi-Leg order event. Refer to Section 5.2.2 for additional guidance. Allowed Values true The immediately preceding event in the order life cycle is a Multi- Leg order event false The immediately preceding event in the order life cycle is not a Multi-Leg order event"
+  },
+  {
+    "field": "nbboSource",
+    "data_type": "Choice",
+    "description": "ATS only field. Source of the NBBO data used. Allowed Values D Direct S SIP H Hybrid \u2013 NBBO Source of Hybrid is used in instances where the firm uses a combination of Direct and SIP feeds as its NBBO Source. NA Not Applicable NBBO Source of \u2018NA\u2019 is used when the NBBO Engine Look up Date and Time is not applicable for the ATS Order Type or the ATS cancelled the order without referencing the NBBO. If this value is used, the related NBBO price and quantity fields must be populated with a value of \u20180\u2019 and the nbboTimestamp must be blank."
+  },
+  {
+    "field": "nbboTimestamp",
+    "data_type": "Timestamp",
+    "description": "ATS only field. The date and time at which the NBBO was referenced."
+  },
+  {
+    "field": "nbbPrice",
+    "data_type": "Price",
+    "description": "ATS only field. The national best bid price in effect at the event timestamp. If the event changed the NBBO, populate with the national best bid price before the change effected by the event."
+  },
+  {
+    "field": "nbbQty",
+    "data_type": "Whole Quantity",
+    "description": "Whole ATS only field. The national best bid quantity in effect at the event Quantity timestamp. If the event changed the NBBO, populate with national best bid quantity before the change effected by the event.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "nboPrice",
+    "data_type": "Price",
+    "description": "ATS only field. The national best offer price in effect at the event timestamp. If the event changed the NBBO, populate with the national best offer price before the change effected by the event."
+  },
+  {
+    "field": "nboQty",
+    "data_type": "Whole Quantity",
+    "description": "Whole ATS only field. The national best offer quantity in effect at the event Quantity timestamp. If the event changed the NBBO, populate with the national best offer quantity before the change effected by the event.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "negotiatedTradeFlag",
+    "data_type": "Boolean",
+    "description": "Identifies if an order is the result of a negotiated trade between two parties. Allowed Values true Indicates the trade is a result of a negotiation false Indicates the trade is not the result of a negotiation"
+  },
+  {
+    "field": "netPrice",
+    "data_type": "Price",
+    "description": "The net price of the order if tied to stock, tied to fixed income, tied to futures, tied to a non-CAT reportable product, or part of another trading strategy in which the order is traded at a net price. Refer to CAT FAQ B71 for additional information."
+  },
+  {
+    "field": "newOrderFDID",
+    "data_type": "Text (40)",
+    "description": "The FDID of the related New Order event, if available in the booking system. Requirements for populating this field may be expanded in future phases of CAT."
+  },
+  {
+    "field": "numberOfLegs",
+    "data_type": "Whole Quantity",
+    "description": "Whole Indicates the number of CAT reportable legs in the multi-leg order. Quantity",
+    "data_type_inferred": true
+  },
+  {
+    "field": "occClearingMemberID",
+    "data_type": "Text (40)",
+    "description": "The OCC Clearing Member ID on optionally reported CMTA transactions."
+  },
+  {
+    "field": "onlyOneQuoteFlag",
+    "data_type": "Boolean",
+    "description": "Identifies instances when the quoting system allows only one quote to be active at a time for the particular market maker. Allowed Values true System allows only one quote false System allows multiple quotes"
+  },
+  {
+    "field": "openCloseIndicator",
+    "data_type": "Choice",
+    "description": "Indicates when exchange rules require an order to be marked as open or close upon entry into the exchange. Must be reported as a point-in-time value on each event (therefore, this may differ between New Option Order and Option Order Route for the same orderID). Allowed Values Open Close"
+  },
+  {
+    "field": "optionID",
+    "data_type": "Text (22)",
+    "description": "The 21-character OSI Symbol of the option. For FLEX Percent options, a percentage symbol (%) is prepended to the OSI symbol elements."
+  },
+  {
+    "field": "orderID",
+    "data_type": "Text (64)",
+    "description": "The internal order ID assigned to the order by the Industry Member. The combination of CATReporterIMID, orderKeyDate, symbol and orderID must be unique."
+  },
+  {
+    "field": "orderKeyDate",
+    "data_type": "Timestamp",
+    "description": "For Primary Events and Secondary Events that assign the Order Key, the date and time the orderID was assigned. For Secondary events that did not assign a new Order Key, the orderKeyDate of the related event from which the Secondary event originated. Used to support uniqueness of an Order Key. If time is not needed to guarantee a unique Order Key, the time portion may be populated with zeros."
+  },
+  {
+    "field": "orderType",
+    "data_type": "Choice",
+    "description": "The type of order being submitted. Allowed Values CAB Cabinet LMT Limit MKT Market"
+  },
+  {
+    "field": "originatingIMID",
+    "data_type": "CAT Reporter IMID",
+    "description": "CAT Reporter An identifier used in instances of a merger or acquisition where the IMID originating firm had open limit orders on its books that will be executed or otherwise resolved under the surviving firm. Must be provided to support linkage to an event that was reported with a different CATReporterIMID.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "pairedOrderID",
+    "data_type": "Text (64)",
+    "description": "If the order was routed as a pair, the internal identifier assigned to all orders included in the paired route. The pairedOrderID can be any unique identifier that links the offsetting sides of the paired orders together. The field is not used for linkage or validation; it does not have to match the value sent to the exchange. The field is not required on MEOR, MEOA, MOOA, and MLOA events reported by Industry Members. Industry Members may optionally populate the pairedOrderID field on Option, Multi-leg or Equity Order Route events for orders that are routed to another Industry Member, if two or more offsetting orders are sent with instructions to cross."
+  },
+  {
+    "field": "parentOrderID",
+    "data_type": "Text (64)",
+    "description": "The orderID of the event from which the Child Order Event or Order Internal Route Accepted event originated."
+  },
+  {
+    "field": "parentOrderKeyDate",
+    "data_type": "Timestamp",
+    "description": "The parentOrderKeyDate is the orderKeyDate of the event from which the Child Order or Order Internal Route Accepted event originated."
+  },
+  {
+    "field": "price",
+    "data_type": "Price",
+    "description": "For Equity and Simple Option Order events, the limit price of the order. The price field may be populated with a value of \u20180\u2019 for orders that are not market orders, but do not have a set limit price. Refer to CAT FAQ B58 for additional information. For Trade events, the price of the trade. For Order Fulfillment events, the price of the fulfillment. For Post-Trade Allocation events, the price of the allocated shares. For Multi-Leg Order events, the net price of the order inclusive of ratio and side represented as a debit/credit."
+  },
+  {
+    "field": "priceType",
+    "data_type": "Choice",
+    "description": "On multi-leg order events, indicates how the net price was represented in the price field. Allowed Values PU \u201cPer Unit\u201d price representing the leg ratios as specified in the legDetails block TC \u201cTotal Cash\u201d amount to settle the full quantity of all legs (i.e., inclusive of the 100 multiplier for option legs) TS \u201cTotal Strategy\u201d price for the full quantity of all legs"
+  },
+  {
+    "field": "priorAllocationID",
+    "data_type": "Text (64)",
+    "description": "If a new allocation ID is assigned, this is the allocationID of the event being modified."
+  },
+  {
+    "field": "priorAllocationKeyDate",
+    "data_type": "Timestamp",
+    "description": "In cases when a new allocationID is assigned, the priorAllocationKeyDate is the allocationKeyDate of the allocation event that is being modified."
+  },
+  {
+    "field": "priorDeskOrderID",
+    "data_type": "Text (64)",
+    "description": "When a new deskOrderID has been assigned on an internal route modified event, this is the deskOrderID of the event being modified."
+  },
+  {
+    "field": "priorFulfillmentID",
+    "data_type": "Text (64)",
+    "description": "In cases when a new fulfillmentID is assigned, the priorFulfillmentID is the fulfillmentID that is being amended."
+  },
+  {
+    "field": "priorFillKeyDate",
+    "data_type": "Timestamp",
+    "description": "In cases when a new fulfillmentID is assigned, the priorFillKeyDate is the fillKeyDate of the fulfillment that is being amended."
+  },
+  {
+    "field": "priorOrderID",
+    "data_type": "Text (64)",
+    "description": "In cases when an event assigns a new orderID, the priorOrderID is the orderID that is being replaced."
+  },
+  {
+    "field": "priorOrderKeyDate",
+    "data_type": "Timestamp",
+    "description": "In cases when an event assigns a new orderID, the priorOrderKeyDate is the orderKeyDate of the order whose orderID is being replaced."
+  },
+  {
+    "field": "priorRoutedOrderID",
+    "data_type": "Text (64)",
+    "description": "In cases where a Route Modified event assigns a new routedOrderID, the priorRoutedOrderID is the routedOrderID of the Order Route event being modified."
+  },
+  {
+    "field": "priorQuoteID",
+    "data_type": "Text (64)",
+    "description": "In cases when a new quoteID is assigned, the priorQuoteID is the quoteID that is being replaced."
+  },
+  {
+    "field": "priorQuoteKeyDate",
+    "data_type": "Timestamp",
+    "description": "In cases when an event assigns a new quoteID, the priorQuoteKeyDate is the quoteKeyDate of the order whose quoteID is being replaced."
+  },
+  {
+    "field": "quantity",
+    "data_type": "Real Quantity",
+    "description": "The quantity of the order. For orders reported with the handlingInstructions value of \u2018ALGS\u2019, a quantity value of \u20180\u2019 may be reported if no maximum quantity is explicitly specified or if there is no set quantity stipulated. Refer to CAT FAQ K22 for additional information. For orders reported with the CASH\u2019 handlingInstructions value, see CAT FAQ D10 for additional information."
+  },
+  {
+    "field": "quoteID",
+    "data_type": "Text (64)",
+    "description": "The internal quote ID assigned to the quote by the reporter. Required to report at the start of the lifecycle if initiated by a quote. On Order Route events, the quoteID of the related MEQR event reported by the IDQS."
+  },
+  {
+    "field": "quoteKeyDate",
+    "data_type": "Timestamp",
+    "description": "The date and time the quoteID was assigned. Used to support uniqueness of a Quote Key and IDQS Linkage Key. If time is not needed to guarantee a unique Quote Key, the time portion may be populated with zeros."
+  },
+  {
+    "field": "quoteRejectedFlag",
+    "data_type": "Boolean",
+    "description": "Indicates if the quote was not accepted by the destination. Allowed Values true false"
+  },
+  {
+    "field": "quoteWantedInd",
+    "data_type": "Choice",
+    "description": "Indicates if the quote message received by an IDQS is a request for a bid or an ask. Allowed Values A Ask Wanted B Bid Wanted"
+  },
+  {
+    "field": "receivedQuoteID",
+    "data_type": "Text (64)",
+    "description": "Identifies the quote ID as received by the ATS or broker-dealer, it must match the routedQuoteID in the Routed Quote event reported by the issuer of the quote."
+  },
+  {
+    "field": "receiverIMID",
+    "data_type": "Industry Member ID",
+    "description": "Industry The IMID of the Industry Member receiving the order or quote. Member ID receiverIMID must match the destination field on the Order Route event reported by the routing Industry Member. If receiving from an exchange as the routing broker, then this must match the routingParty on the Order Route event reported by the exchange.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "receivingDeskType",
+    "data_type": "Choice",
+    "description": "Indicates the type of desk or department within the firm that received the order. More granular than the field deptType. Only required when the destination of an internal route is a desk. Allowed Values A Agency AR Arbitrage B Block Trading C Convertible Desk CR Central Risk Books D Derivatives EC Equity Capital Markets FB Floor Broker IN International IS Institutional O Other PF Preferred Trading PR Proprietary PT Program Trading S Sales SW Swaps T Trading Desk TR Treasury"
+  },
+  {
+    "field": "reportingExceptionCode",
+    "data_type": "Choice",
+    "description": "Indicates the reason that a unique identifier (e.g., Branch Sequence Number, Compliance ID) was not supplied to a transaction reporting system. Allowed Values C Industry Member was the contra side of the trade report for a trade which was reported to a TRF/ORF/ADF via a QSR or AGU. F Reported on Form T pursuant to FINRA Trade Reporting Rules. N Trade was executed by a non-FINRA member and reported to the TRF by the FINRA member counterparty. P Intra\u2013firm order where there is no change in beneficial ownership."
+  },
+  {
+    "field": "representativeInd",
+    "data_type": "Choice",
+    "description": "Indicates the type of representative order being reported and whether linkage is required. Refer to Appendix C for additional information on Representative Order linkage requirements. Allowed Values for Equities Y Representative order, linkage required YE Representative eligible - Order eligible for customer/client fills via an unlinked system (unlinked OMS-EMS or position fill workflow). All Industry Members will be required to provide representative order linkages to unlinked OMS/EMS and position fill scenarios no later than January 31, 2028 due to the expiry of the exemptive relief granted by the SEC on January 23, 2026. YP Representative order, pricing guarantee, no linkage required. All Industry Members will be required to provide representative order linkages to unlinked OMS/EMS and position fill scenarios no later than January 31, 2028 due to the expiry of the exemptive relief granted by the SEC on January 23, 2026. YS Representative order, linkage required; details in supplement event N Not a representative order, linkage is not applicable Allowed Values for Simple Options O Options Representative Order OS Options Representative Order; details in supplement event OE Options Representative eligible. Representative options order eligible for customer/client fills via an unlinked system (unlinked OMS-EMS). All Industry Members will be required to provide representative order linkages to unlinked OMS-EMS and position fill scenarios no later than January 31, 2028 due to the expiry of the exemptive relief granted by the SEC on January 23, 2026. N Not a representative order, linkage is not applicable Allowed Values for Multi-Leg/Complex Options OML Multi-Leg Options Representative Order OMS Multi-Leg Options Representative Order; details in supplement event OME Multi-Leg Option Representative eligible. Representative multi- leg order eligible for customer/client fills via an unlinked system (unlinked OMS-EMS). All Industry Members will be required to provide representative (continued) order linkages to unlinked OMS-EMS and position fill scenarios (continued) no later than January 31, 2028 due to the expiry of the exemptive relief granted by the SEC on January 23, 2026. N Not a representative order, linkage is not applicable"
+  },
+  {
+    "field": "representativeQuoteInd",
+    "data_type": "Choice",
+    "description": "Indicates if the quote represents customer/client orders. Allowed Values A Ask B Bid C Combined Quote containing Ask and Bid N Neither S Details in supplement event"
+  },
+  {
+    "field": "reservedForFutureUse",
+    "data_type": "Text (0)",
+    "description": "Field is Reserved for Future Use and must remain blank. Future enhancements to Message Types with positions that are Reserved for Future Use will occupy the available position before adding a new position."
+  },
+  {
+    "field": "retiredFieldPosition",
+    "data_type": "Text (0)",
+    "description": "Field position is retired and must remain blank. Used when a field position contained a field that was actively reported and was removed. Future enhancements to Message Types will not occupy these positions."
+  },
+  {
+    "field": "requestTimestamp",
+    "data_type": "Timestamp",
+    "description": "The date/time that a modification/cancellation request was received. This timestamp is used as an alternative to reporting separate a request event, and should not be used when a separate request event is reported. RFQID Text (64) For New Order events representing a response to an RFQ or solicitation, the ID assigned to the related RFQ or solicitation being responded to."
+  },
+  {
+    "field": "routedOrderID",
+    "data_type": "Text (64)",
+    "description": "For orders routed, the ID assigned to the order by the routing firm when routing the order. For orders received, the ID assigned to the order by the routing firm. Must be unique per combination of Event Date, symbol (or optionID), destination/receiverIMID, senderIMID, and session (applicable only on routes to exchanges)."
+  },
+  {
+    "field": "routedQuoteID",
+    "data_type": "Text (64)",
+    "description": "For quotes sent, the quoteID as sent to the recipient of the quote. For quotes received, the quoteID as received from the routing firm."
+  },
+  {
+    "field": "routeRejectedFlag",
+    "data_type": "Boolean",
+    "description": "Indicates the routed order was not accepted by the destination (i.e., rejected, no response). Refer to Section 2.6.3.5 for additional information. Allowed Values true Rejected or abandoned false Not rejected"
+  },
+  {
+    "field": "sellDetails",
+    "data_type": "Trade Side Details",
+    "description": "Trade Side Captures the Order Key and additional information for the Order Details associated with the sell side of a Trade Event. This field is in the format of Trade Side Details, a compound data type that consists of a list of fields (see Section 2.5 Data Types). The sellDetails field is only used in Trade events and Trade Supplement events to capture the sell side details of the trade. Refer to Section 4.11.1 for a list of fields. This field is applicable on a Trade event if there is only one orderID associated with this side of the trade. If there is more than one orderID, the sellDetails must be populated in separate Trade Supplement events.",
+    "data_type_inferred": true
+  },
+  {
+    "field": "senderIMID",
+    "data_type": "Industry Member ID",
+    "description": "Industry Provides the identity of the party routing the order or quote, known also by Member ID/ the destination. The senderIMID reported by the routing entity must match Exchange ID the senderIMID reported by the receiving party. When receiving an order, the senderIMID is the IMID from which the order was received. When receiving orders from an exchange, the senderIMID must be equal to the Exchange ID and must match the exchange field in the Route event reported by the exchange. When routing an order, the senderIMID is the IMID being used by the Industry Member to route the order, as known by the destination. The senderIMID is either the IMID of the Industry Member, corresponding to senderType F or O, or the Exchange ID of the exchange, corresponding to senderType E. Allowed Values for Exchange ID (when senderType = E) 24X 24X National Exchange AMER NYSE American Equities AMEROP NYSE American Options ARCA NYSE ARCA Equities ARCAOP NYSE ARCA Options BOX BOX Options Exchange BSTX Boston Security Token Exchange BX Nasdaq Texas Equities BYX Cboe BYX Exchange BZX Cboe BZX Equities BZXOP Cboe BZX Options C2 Cboe C2 Options CBOE Cboe Exchange CHX NYSE Texas EDGA Cboe EDGA Exchange EDGX Cboe EDGX Equities EDGXOP Cboe EDGX Options EMLD MIAX Emerald GEMX Nasdaq GEMX IEX Investor's Exchange IEXOP IEX Options ISE Nasdaq ISE LTSE Long Term Stock Exchange MEMX Members Exchange MEMXOP Members Options Exchange MIAMI Miami International Securities Exchange MRX Nasdaq MRX MX2OP MX2 Options NOBO Nasdaq Texas Options NOM Nasdaq Options NSDQ Nasdaq Stock NSX NYSE National NYSE The New York Stock Exchange PEARL MIAX PEARL PEARLEQ MIAX PEARL Equities (continued) PHLX Nasdaq PHLX Options (continued) PSX Nasdaq PHLX Equities SPHR MIAX Sapphire TXSE Texas Stock Exchange",
+    "data_type_inferred": true
+  },
+  {
+    "field": "senderType",
+    "data_type": "Choice",
+    "description": "Identifies from where a routed order originated. Allowed Values for Order Events E Exchange F Industry Member O OTC Equity symbol in a foreign security was sent by another Industry Member, who may not have a CAT reporting obligation"
+  },
+  {
+    "field": "seqNum",
+    "data_type": "Alphanumeric",
+    "description": "ATS only field. The sequence number of the event, used to sequence (40) events when multiple events have the same timestamp. The sequence number is required to be an increasing value for a CAT Reporter, Event Date, and symbol, such that it can be used to sequence events having the same event timestamp in chronological order. Refer to Section 2.3.1 Timestamps and Section 3.1.3 Sequence Number."
+  },
+  {
+    "field": "session",
+    "data_type": "Text (40)",
+    "description": "The identifier representing the name or identifier of the session used when routing to an exchange. Session may be blank or populated with any string value that is shared between sender and receiver. Used to ensure a unique Route Linkage Key. Refer to the Order Routing Field Mapping document published on the IM Technical Specifications page of the CAT Public Website."
+  },
+  {
+    "field": "settlementDate",
+    "data_type": "Date",
+    "description": "The settlement date of the securities being allocated"
+  },
+  {
+    "field": "side",
+    "data_type": "Choice",
+    "description": "Side of the event. Allowable side values are based on the corresponding Event Type and side as shown below. Product Type Side Equity Option Buy B Buy B Buy Sell SL Sell Long S Sell SS Short Sale SX Short Sale Exempt"
+  },
+  {
+    "field": "sideDetailsInd",
+    "data_type": "Choice",
+    "description": "Identifies if a Trade event is one sided, and which side of the trade the Industry Member is populating in the Trade Side Details. Allowed Values BUY The Trade event is one sided, and the reporter is on the Buy side of the trade. Only the buyDetails are populated. SELL The Trade event is one sided, and the reporter is on the Sell side of the trade. Only the sellDetails are populated. NA Not Applicable \u2013 the Trade event is not one sided."
+  },
+  {
+    "field": "solicitationFlag",
+    "data_type": "Boolean",
+    "description": "Indicates if the order was originated in response to an RFQ or other solicitation process. This field is not used to indicate if a registered representative of the firm solicited a customer/client order. Allowed Values true Event was received or originated as the result of a response to an RFQ or other solicitation process. false Event was not received or originated as the result of a response to an RFQ or other solicitation process."
+  },
+  {
+    "field": "symbol",
+    "data_type": "Symbol",
+    "description": "The symbol of the stock in the symbology of the primary listing exchange or FINRA OTC symbology for OTC Equity Securities."
+  },
+  {
+    "field": "tapeTradeID",
+    "data_type": "Text (40)",
+    "description": "The unique identifier reported by the Industry Member to the TRF/ADF/ORF based on the reporting specifications of the specific facility. Required when the tapeTradeID was supplied to a transaction reporting system: Compliance ID in ORF and ADF Branch Sequence Number in FINRA/NQ TRF FINRA Compliance Number in FINRA/NYSE TRF Must be unique per combination of Event Date, CATReporterIMID, marketCenterID and symbol. The tapeTradeID may link to either the reporting side or the contra-side of the media tape report."
+  },
+  {
+    "field": "timeInForce",
+    "data_type": "Name/Value Pairs",
+    "description": "Name/Value Specifies the Time in Force for an order. Pairs Each attribute is either Boolean or Non-Boolean. A Boolean attribute is a Name and a Non-Boolean attribute is a Name with an accompanying paired Value. The following examples demonstrate how to represent in JSON and CSV: Ex JSON CSV 1 \"timeInForce\":{\"DAY\": DAY=20190528 20190528} 2 \"timeInForce\":{\"GTT\": GTT=20190528T160000.000000 \u201c20190528T160000.000000\u201d} 3 \u201ctimeInForce\u201d:{\u201cIOC\u201d: true} IOC Allowed Values (Boolean) GTC Good till Cancelled GTM Good this Month \u2013 Valid until last business day of the month in which the order originated. IOC Immediate or Cancel IOR Immediate or Return \u2013 Only applicable to options floor brokers Allowed Values (Non-Boolean) DAY Day Order \u2013 Requires the expiration date which must be equal to Event Date or Event Date plus one Trading Day. Data Type: Date GFD OTC Link ATS message Good for Duration \u2013 Requires the duration in the number of whole seconds. Only Applicable to order events representing OTC Link ATS messages. Data Type: Unsigned GTD Good till Date \u2013 Requires the expiration date. Data Type: Date GTT Good till Time \u2013 Requires the expiration timestamp. Data Type: Timestamp GTX Good till Crossing \u2013 Requires the expiration date which must be equal to Event Date or Event Date plus one Trading Day. Data Type: Date",
+    "data_type_inferred": true
+  },
+  {
+    "field": "tradeDate",
+    "data_type": "Date",
+    "description": "The trade date of the securities being allocated. Used to validate the symbol or optionID field on Allocation events."
+  },
+  {
+    "field": "tradeID",
+    "data_type": "Text (64)",
+    "description": "The internal trade ID assigned to the trade event by the Industry Member. The combination of tradeKeyDate, CATReporterIMID, symbol, and tradeID must be unique."
+  },
+  {
+    "field": "tradeKeyDate",
+    "data_type": "Timestamp",
+    "description": "The date and time the tradeID was assigned. Used to support uniqueness of a Trade Key. If time is not needed to guarantee a unique Trade Key, the time portion may be populated with zeros."
+  },
+  {
+    "field": "tradingSession",
+    "data_type": "Choice",
+    "description": "The trading session(s) during which an order is eligible to trade. Allowed Values FOR To be executed only on a Foreign Market PRE Pre-Market Only PREREG Pre-Market and Regular REG Regular Only REGPOST Regular and Post-Market POST Post-Market Only PREPOST Pre-Market and Post-Market ALL All Sessions \u2013 Order can trade in any available session at the venue where it is sent. Refer to FAQ D32 for additional information."
+  },
+  {
+    "field": "triggerPrice",
+    "data_type": "Price",
+    "description": "The price at which the order became effective. Required in scenarios where the trigger price was not explicitly captured in the handlingInstructions field on the related new order (e.g., Stop Formula, Trailing Stop)"
+  },
+  {
+    "field": "type",
+    "data_type": "Message Type",
+    "description": "Specifies the event type. Equity Events MENO New Order MENOS New Order Supplement MEOR Order Route MEMR Route Modified MECR Route Cancelled MEORS Order Route Supplement MEMRS Route Modified Supplement MECRS Route Cancelled Supplement MEOA Order Accepted MEIR Order Internal Route Accepted MEIM Order Internal Route Modified MEIC Order Internal Route Cancelled MEIMR Order Internal Route Modification Request MEICR Order Internal Route Cancel Request MECO Child Order MECOM Child Order Modified MECOC Child Order Cancelled MEOM Order Modified MEOMS Order Modified Supplement MEOMR Order Modification Request MEOJ Order Adjusted MEOC Order Cancelled MEOCR Order Cancel Request MENQ New Quote MENQS New Quote Supplement MERQ Routed Quote MERQS Routed Quote Supplement (continued) MEQR Quote Received (continued) MEQC Quote Cancelled MEQM Quote Modified MEQS Quote Status MEOT Trade MEOTS Trade Supplement MEOF Order Fulfillment MEOFS Order Fulfillment Supplement MEFA Order Fulfillment Amendment MEPA Post-Trade Allocation MEAA Amended Allocation MEOE Order Effective Simple Option Events MONO New Option Order MONOS Option Order Supplement MOOR Option Order Route MOMR Option Route Modified MOCR Option Route Cancelled MOORS Option Order Route Supplement MOMRS Option Route Modified Supplement MOCRS Option Route Cancelled Supplement MOOA Option Order Accepted MOIR Option Order Internal Route Accepted MOIM Option Order Internal Route Modified MOIC Option Order Internal Route Cancelled MOIMR Option Order Internal Route Modification Request MOICR Option Order Internal Route Cancel Request MOCO Child Option Order MOCOM Child Option Order Modified MOCOC Child Option Order Cancelled MOOM Option Order Modified MOOMS Option Order Modified Supplement MOOMR Option Order Modification Request MOOJ Option Order Adjusted MOOC Option Order Cancelled MOOCR Option Order Cancel Request MOOT Option Trade MOOF Option Order Fulfillment MOOFS Option Order Fulfillment Supplement MOFA Option Order Fulfillment Amendment MOPA Option Post-Trade Allocation MOAA Option Amended Allocation MOOE Option Order Effective Multi-Leg Option Events (continued) MLNO Multi-Leg New Order (continued) MLOR Multi-Leg Order Route MLMR Multi-Leg Route Modified MLCR Multi-Leg Route Cancelled MLOA Multi-Leg Order Accepted MLIR Multi-Leg Order Internal Route Accepted MLIM Multi-Leg Order Internal Route Modified MLIC Multi-Leg Order Internal Route Cancelled MLIMR Multi-Leg Order Internal Route Modification Request MLICR Multi-Leg Order Internal Route Cancel Request MLCO Multi-Leg Child Order MLCOM Multi-Leg Child Order Modified MLCOC Multi-Leg Child Order Cancelled MLOM Multi-Leg Order Modified MLOMR Multi-Leg Order Modification Request MLOC Multi-Leg Order Cancelled MLOCR Multi-Leg Order Cancel Request MLOS Multi-Leg Order Supplement MLOE Multi-Leg Order Effective"
+  },
+  {
+    "field": "underlying",
+    "data_type": "Symbol",
+    "description": "The symbol of the underlying instrument for one or more of the option legs. See Section 2.4.5: Underlying Instrument for Multi-leg Orders for guidance."
+  },
+  {
+    "field": "unsolicitedInd",
+    "data_type": "Choice",
+    "description": "Indicates when the quote is unsolicited. Allowed Values U Unsolicited Bid and Ask A Unsolicited Ask B Unsolicited Bid N Not Unsolicited"
+  },
+  {
+    "field": "unpricedInd",
+    "data_type": "Boolean",
+    "description": "Indicates when a quote is unpriced. Used to indicate when a quote represents a name only quote in an OTC Equity security or when quote is generated to cancel and clear an existing two-sided quotation in NMS Security on a Display-Only Facility. Allowed Values true Quote is unpriced false Quote is not unpriced"
+  },
+  {
+    "field": "workingPrice",
+    "data_type": "Price",
+    "description": "ATS only field. The working price of the order. If the price at which an order is currently priced on the matching engine is different that the stated limit price, the current price at which the order is priced on the matching engine should be populated. For example, in a PEG order, the adjusted price due to NBBO movement if the ATS repriced the order must be captured in workingPrice. If an ATS does not maintain a separate working price within its matching engine, this field would not be applicable."
+  }
+]

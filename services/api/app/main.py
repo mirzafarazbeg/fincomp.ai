@@ -3,6 +3,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
+import httpx
 from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -27,6 +28,7 @@ class QueryResponse(BaseModel):
     answer: str | None
     chunks: list[dict]
     generated: bool
+    warning: str | None = None  # set if generation was attempted but failed (e.g. Ollama unreachable)
 
 
 @app.get('/health')
@@ -45,13 +47,16 @@ def index():
 @app.post('/query', response_model=QueryResponse)
 def query(req: QueryRequest):
     chunks = rag_client.retrieve(req.question, top_k=req.top_k, submission_id=req.submission_id)
+    answer, generated, warning = None, False, None
     if llm.is_configured():
-        answer = llm.generate(req.question, chunks)
-        generated = True
-    else:
-        answer = None
-        generated = False
-    return QueryResponse(answer=answer, chunks=chunks, generated=generated)
+        try:
+            answer = llm.generate(req.question, chunks)
+            generated = True
+        except httpx.HTTPError as e:
+            # Ollama unreachable/erroring - degrade to retrieval-only instead
+            # of 500ing the whole request; the sources are still useful.
+            warning = f'LLM generation failed ({e.__class__.__name__}: {e}); showing retrieved sources only.'
+    return QueryResponse(answer=answer, chunks=chunks, generated=generated, warning=warning)
 
 
 @app.post('/validate')

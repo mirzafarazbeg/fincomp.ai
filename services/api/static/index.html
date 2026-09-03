@@ -131,6 +131,8 @@ form.addEventListener('submit', async (e) => {
     let body;
     if (data.generated) {
       body = `<div class="whitespace-pre-wrap">${escapeHtml(data.answer)}</div>`;
+    } else if (data.warning) {
+      body = `<div class="text-amber-700 italic">${escapeHtml(data.warning)}</div>`;
     } else {
       body = `<div class="text-slate-500 italic">No LLM configured — showing retrieved sources only.</div>`;
     }

@@ -1,0 +1,827 @@
+{
+  "2001": [
+    "accountHolderType"
+  ],
+  "2002": [
+    "actionType"
+  ],
+  "2003": [
+    "affiliateFlag"
+  ],
+  "2004": [
+    "aggregatedOrders"
+  ],
+  "2005": [
+    "askPrice",
+    "askQty"
+  ],
+  "2006": [
+    "askQty",
+    "askPrice"
+  ],
+  "2007": [
+    "atsDisplayInd"
+  ],
+  "2008": [
+    "atsOrderType",
+    "type"
+  ],
+  "2009": [
+    "bidPrice",
+    "bidQty"
+  ],
+  "2010": [
+    "bidQty",
+    "bidPrice"
+  ],
+  "2011": [
+    "CATReporterIMID"
+  ],
+  "2012": [
+    "cancelQty"
+  ],
+  "2013": [
+    "cancelFlag"
+  ],
+  "2014": [
+    "cancelTimestamp",
+    "cancelFlag"
+  ],
+  "2015": [
+    "capacity"
+  ],
+  "2017": [
+    "custDspIntrFlag"
+  ],
+  "2018": [
+    "deptType"
+  ],
+  "2019": [
+    "destination",
+    "destinationType"
+  ],
+  "2020": [
+    "destinationType"
+  ],
+  "2021": [
+    "displayPrice"
+  ],
+  "2022": [
+    "displayQty"
+  ],
+  "2023": [
+    "dupROIDCond"
+  ],
+  "2024": [
+    "electronicDupFlag"
+  ],
+  "2025": [
+    "electronicTimestamp"
+  ],
+  "2026": [
+    "errorROEID",
+    "actionType"
+  ],
+  "2027": [
+    "eventTimestamp",
+    "manualFlag"
+  ],
+  "2028": [
+    "exchOriginCode",
+    "destinationType"
+  ],
+  "2030": [
+    "fillKeyDate"
+  ],
+  "2031": [
+    "firmDesignatedID"
+  ],
+  "2032": [
+    "firmROEID"
+  ],
+  "2033": [
+    "firmROEID",
+    "eventTimestamp"
+  ],
+  "2034": [
+    "fulfillmentID"
+  ],
+  "2035": [
+    "fulfillmentLinkType"
+  ],
+  "2036": [
+    "handlingInstructions"
+  ],
+  "2037": [
+    "infoBarrierID"
+  ],
+  "2038": [
+    "initiator"
+  ],
+  "2039": [
+    "isoInd"
+  ],
+  "2040": [
+    "leavesQty",
+    "quantity"
+  ],
+  "2041": [
+    "manualFlag"
+  ],
+  "2042": [
+    "manualOrderKeyDate",
+    "manualOrderID"
+  ],
+  "2043": [
+    "manualOrderID"
+  ],
+  "2044": [
+    "marketCenterID"
+  ],
+  "2045": [
+    "minQty"
+  ],
+  "2046": [
+    "mpStatusCode"
+  ],
+  "2047": [
+    "nbboSource"
+  ],
+  "2048": [
+    "nbboTimestamp"
+  ],
+  "2049": [
+    "nbbPrice"
+  ],
+  "2050": [
+    "nbbQty"
+  ],
+  "2051": [
+    "nboPrice"
+  ],
+  "2052": [
+    "nboQty"
+  ],
+  "2053": [
+    "negotiatedTradeFlag"
+  ],
+  "2054": [
+    "sideDetailsInd"
+  ],
+  "2056": [
+    "onlyOneQuoteFlag"
+  ],
+  "2057": [
+    "openCloseIndicator"
+  ],
+  "2058": [
+    "optionID"
+  ],
+  "2060": [
+    "optionID",
+    "tradeDate",
+    "eventTimestamp"
+  ],
+  "2061": [
+    "orderID"
+  ],
+  "2062": [
+    "orderType"
+  ],
+  "2063": [
+    "orderKeyDate"
+  ],
+  "2064": [
+    "originatingIMID"
+  ],
+  "2065": [
+    "parentOrderID"
+  ],
+  "2066": [
+    "parentOrderKeyDate"
+  ],
+  "2067": [
+    "price"
+  ],
+  "2068": [
+    "priorFillKeyDate"
+  ],
+  "2070": [
+    "priorFulfillmentID"
+  ],
+  "2071": [
+    "priorOrderID"
+  ],
+  "2072": [
+    "priorOrderKeyDate"
+  ],
+  "2073": [
+    "priorQuoteKeyDate"
+  ],
+  "2074": [
+    "priorQuoteID"
+  ],
+  "2076": [
+    "quantity"
+  ],
+  "2077": [
+    "quoteID"
+  ],
+  "2078": [
+    "quoteKeyDate"
+  ],
+  "2080": [
+    "quoteRejectedFlag"
+  ],
+  "2081": [
+    "receivedQuoteID"
+  ],
+  "2082": [
+    "receiverIMID"
+  ],
+  "2083": [
+    "receivingDeskType"
+  ],
+  "2084": [
+    "reportingExceptionCode"
+  ],
+  "2085": [
+    "representativeInd"
+  ],
+  "2086": [
+    "routedOrderID"
+  ],
+  "2087": [
+    "routedQuoteID"
+  ],
+  "2088": [
+    "routeRejectedFlag"
+  ],
+  "2089": [
+    "senderType",
+    "senderIMID"
+  ],
+  "2090": [
+    "senderType"
+  ],
+  "2091": [
+    "senderIMID"
+  ],
+  "2092": [
+    "seqNum"
+  ],
+  "2093": [
+    "session",
+    "destinationType"
+  ],
+  "2095": [
+    "side"
+  ],
+  "2096": [
+    "symbol"
+  ],
+  "2098": [
+    "symbol",
+    "tradeDate",
+    "eventTimestamp"
+  ],
+  "2099": [
+    "symbol"
+  ],
+  "2100": [
+    "tapeTradeID"
+  ],
+  "2101": [
+    "timeInForce"
+  ],
+  "2102": [
+    "tradeID"
+  ],
+  "2103": [
+    "tradeKeyDate"
+  ],
+  "2104": [
+    "tradingSession"
+  ],
+  "2105": [
+    "type"
+  ],
+  "2106": [
+    "unsolicitedInd"
+  ],
+  "2107": [
+    "workingPrice",
+    "atsDisplayInd"
+  ],
+  "2108": [
+    "sideDetailsInd",
+    "buyDetails"
+  ],
+  "2109": [
+    "orderID",
+    "buyDetails"
+  ],
+  "2110": [
+    "orderKeyDate",
+    "buyDetails"
+  ],
+  "2111": [
+    "side",
+    "buyDetails"
+  ],
+  "2112": [
+    "firmDesignatedID",
+    "buyDetails"
+  ],
+  "2113": [
+    "accountHolderType",
+    "buyDetails"
+  ],
+  "2114": [
+    "firmDesignatedID",
+    "orderID",
+    "buyDetails"
+  ],
+  "2115": [
+    "sideDetailsInd",
+    "sellDetails"
+  ],
+  "2116": [
+    "orderID",
+    "sellDetails"
+  ],
+  "2117": [
+    "orderKeyDate",
+    "sellDetails"
+  ],
+  "2118": [
+    "side",
+    "sellDetails"
+  ],
+  "2119": [
+    "firmDesignatedID",
+    "sellDetails"
+  ],
+  "2120": [
+    "accountHolderType",
+    "sellDetails"
+  ],
+  "2121": [
+    "orderID",
+    "clientDetails"
+  ],
+  "2122": [
+    "orderKeyDate",
+    "clientDetails"
+  ],
+  "2123": [
+    "side",
+    "clientDetails"
+  ],
+  "2124": [
+    "firmDesignatedID",
+    "clientDetails"
+  ],
+  "2125": [
+    "accountHolderType",
+    "clientDetails"
+  ],
+  "2126": [
+    "orderID",
+    "firmDetails"
+  ],
+  "2127": [
+    "orderKeyDate",
+    "firmDetails"
+  ],
+  "2128": [
+    "side",
+    "firmDetails"
+  ],
+  "2129": [
+    "firmDesignatedID",
+    "firmDetails"
+  ],
+  "2130": [
+    "accountHolderType",
+    "firmDetails"
+  ],
+  "2133": [
+    "type"
+  ],
+  "2139": [
+    "eventTimestamp"
+  ],
+  "2142": [
+    "aggregatedOrders",
+    "representativeInd"
+  ],
+  "2143": [
+    "electronicDupFlag",
+    "manualFlag"
+  ],
+  "2144": [
+    "electronicTimestamp",
+    "manualFlag"
+  ],
+  "2145": [
+    "fulfillmentLinkType",
+    "firmDetails"
+  ],
+  "2146": [
+    "clientDetails"
+  ],
+  "2147": [
+    "firmDetails"
+  ],
+  "2148": [
+    "firmDesignatedID",
+    "orderID",
+    "sellDetails"
+  ],
+  "2149": [
+    "CATReporterIMID",
+    "senderIMID"
+  ],
+  "2150": [
+    "CATReporterIMID",
+    "receiverIMID"
+  ],
+  "2154": [
+    "quoteWantedInd"
+  ],
+  "2156": [
+    "reservedForFutureUse"
+  ],
+  "2157": [
+    "quantity",
+    "buyDetails"
+  ],
+  "2158": [
+    "originatingIMID",
+    "buyDetails"
+  ],
+  "2159": [
+    "quantity",
+    "sellDetails"
+  ],
+  "2160": [
+    "originatingIMID",
+    "sellDetails"
+  ],
+  "2161": [
+    "quantity",
+    "clientDetails"
+  ],
+  "2162": [
+    "originatingIMID",
+    "clientDetails"
+  ],
+  "2163": [
+    "quantity",
+    "firmDetails"
+  ],
+  "2164": [
+    "originatingIMID",
+    "firmDetails"
+  ],
+  "2165": [
+    "orderID",
+    "aggregatedOrders"
+  ],
+  "2166": [
+    "orderKeyDate",
+    "aggregatedOrders"
+  ],
+  "2167": [
+    "quantity",
+    "aggregatedOrders"
+  ],
+  "2168": [
+    "originatingIMID",
+    "aggregatedOrders"
+  ],
+  "2169": [
+    "reportingExceptionCode",
+    "tapeTradeID"
+  ],
+  "2170": [
+    "allocationKeyDate"
+  ],
+  "2171": [
+    "allocationID"
+  ],
+  "2172": [
+    "priorAllocationKeyDate"
+  ],
+  "2173": [
+    "priorAllocationID"
+  ],
+  "2175": [
+    "institutionFlag"
+  ],
+  "2176": [
+    "tradeDate"
+  ],
+  "2177": [
+    "settlementDate"
+  ],
+  "2178": [
+    "allocationType"
+  ],
+  "2179": [
+    "DVPCustodianID"
+  ],
+  "2180": [
+    "correspondentCRD"
+  ],
+  "2181": [
+    "newOrderFDID"
+  ],
+  "2182": [
+    "allocationInstructionTime"
+  ],
+  "2184": [
+    "clearingFirm",
+    "reportingExceptionCode"
+  ],
+  "2185": [
+    "counterparty",
+    "reportingExceptionCode"
+  ],
+  "2186": [
+    "solicitationFlag"
+  ],
+  "2187": [
+    "RFQID"
+  ],
+  "2188": [
+    "unpricedInd"
+  ],
+  "2189": [
+    "senderIMID",
+    "destination",
+    "receiverIMID"
+  ],
+  "2190": [
+    "parentOrderID",
+    "orderID",
+    "parentOrderKeyDate",
+    "priorOrderID",
+    "priorOrderKeyDate",
+    "orderKeyDate"
+  ],
+  "2191": [
+    "orderID",
+    "orderKeyDate",
+    "aggregatedOrders"
+  ],
+  "2192": [
+    "triggerPrice"
+  ],
+  "2200": [
+    "legDetails"
+  ],
+  "2201": [
+    "legRefID",
+    "legDetails"
+  ],
+  "2202": [
+    "legRatioQuantity",
+    "legDetails"
+  ],
+  "2203": [
+    "numberOfLegs"
+  ],
+  "2204": [
+    "pairedOrderID"
+  ],
+  "2205": [
+    "requestTimestamp"
+  ],
+  "2206": [
+    "multiLegInd"
+  ],
+  "2207": [
+    "retiredFieldPosition"
+  ],
+  "2208": [
+    "priorRoutedOrderID"
+  ],
+  "2209": [
+    "routedOrderID",
+    "priorRoutedOrderID"
+  ],
+  "2210": [
+    "underlying"
+  ],
+  "2211": [
+    "netPrice"
+  ],
+  "2213": [
+    "legDetails",
+    "symbol",
+    "optionID"
+  ],
+  "2214": [
+    "openCloseIndicator",
+    "legDetails"
+  ],
+  "2215": [
+    "side",
+    "legDetails"
+  ],
+  "2216": [
+    "priceType"
+  ],
+  "2217": [
+    "destination"
+  ],
+  "2218": [
+    "occClearingMemberID"
+  ],
+  "2221": [
+    "openCloseIndicator",
+    "legDetails",
+    "symbol"
+  ],
+  "2222": [
+    "clearingFirm"
+  ],
+  "2223": [
+    "firmDesignatedID",
+    "firmDetails",
+    "orderID"
+  ],
+  "2224": [
+    "symbol",
+    "legDetails",
+    "tradeDate",
+    "eventTimestamp"
+  ],
+  "2225": [
+    "optionID",
+    "legDetails",
+    "tradeDate",
+    "eventTimestamp"
+  ],
+  "2226": [
+    "price",
+    "netPrice"
+  ],
+  "2227": [
+    "buyDetails",
+    "orderID",
+    "sellDetails"
+  ],
+  "2228": [
+    "firmDetails",
+    "orderID",
+    "clientDetails"
+  ],
+  "2229": [
+    "deskOrderID"
+  ],
+  "2230": [
+    "priorDeskOrderID",
+    "deskOrderID",
+    "representativeQuoteInd"
+  ],
+  "2232": [
+    "askAggregatedOrders"
+  ],
+  "2233": [
+    "orderID",
+    "askAggregatedOrders"
+  ],
+  "2234": [
+    "orderKeyDate",
+    "askAggregatedOrders"
+  ],
+  "2235": [
+    "quantity",
+    "askAggregatedOrders"
+  ],
+  "2236": [
+    "originatingIMID",
+    "askAggregatedOrders"
+  ],
+  "2237": [
+    "askAggregatedOrders",
+    "representativeQuoteInd"
+  ],
+  "2238": [
+    "bidAggregatedOrders"
+  ],
+  "2239": [
+    "orderID",
+    "bidAggregatedOrders"
+  ],
+  "2240": [
+    "orderKeyDate",
+    "bidAggregatedOrders"
+  ],
+  "2241": [
+    "quantity",
+    "bidAggregatedOrders"
+  ],
+  "2242": [
+    "originatingIMID",
+    "bidAggregatedOrders"
+  ],
+  "2243": [
+    "bidAggregatedOrders",
+    "representativeQuoteInd"
+  ],
+  "2244": [
+    "firmDesignatedID",
+    "representativeQuoteInd"
+  ],
+  "2245": [
+    "firmDesignatedID",
+    "accountHolderType"
+  ],
+  "2246": [
+    "unsolicitedInd",
+    "representativeQuoteInd"
+  ],
+  "2258": [
+    "capacity",
+    "firmDesignatedID",
+    "buyDetails"
+  ],
+  "2259": [
+    "capacity",
+    "firmDesignatedID",
+    "sellDetails"
+  ],
+  "2260": [
+    "BFMMFlag"
+  ],
+  "2261": [
+    "BFMMFlag",
+    "accountHolderType"
+  ],
+  "2262": [
+    "BFMMFlag",
+    "side"
+  ],
+  "2263": [
+    "BFMMFlag",
+    "buyDetails"
+  ],
+  "2264": [
+    "BFMMFlag",
+    "sellDetails"
+  ],
+  "2265": [
+    "BFMMFlag",
+    "accountHolderType",
+    "buyDetails"
+  ],
+  "2266": [
+    "BFMMFlag",
+    "side",
+    "buyDetails"
+  ],
+  "2267": [
+    "BFMMFlag",
+    "accountHolderType",
+    "sellDetails"
+  ],
+  "2268": [
+    "BFMMFlag",
+    "side",
+    "sellDetails"
+  ],
+  "2269": [
+    "firmDesignatedID",
+    "aggregatedOrders"
+  ],
+  "2270": [
+    "firmDesignatedID"
+  ],
+  "2271": [
+    "firmDesignatedID",
+    "aggregatedOrders",
+    "routeRejectedFlag",
+    "legDetails"
+  ],
+  "2272": [
+    "firmDesignatedID",
+    "quoteRejectedFlag",
+    "legDetails"
+  ],
+  "2273": [
+    "buyDetails"
+  ],
+  "2274": [
+    "sellDetails"
+  ],
+  "2275": [
+    "clientDetails"
+  ],
+  "2276": [
+    "firmDetails"
+  ]
+}

@@ -15,7 +15,21 @@ SYSTEM_PROMPT = (
     "code/field referenced in each chunk you use (the citation is given with "
     "each chunk). If the context does not contain the answer, say so plainly "
     "instead of guessing — do not use outside knowledge for compliance-specific "
-    "facts (rule numbers, error codes, field requirements)."
+    "facts (rule numbers, error codes, field requirements).\n\n"
+    "The context mixes two kinds of chunks, and you must not conflate them:\n"
+    "- \"CAT Validation Finding\" chunks are the actual result for THIS "
+    "specific uploaded file. A CAT error code number appears in a Validation "
+    "Finding chunk's own text ONLY if the validator determined one "
+    "unambiguously for that exact finding — e.g. \"Error [2041]: ...\".\n"
+    "- \"CAT Error Code Catalog\" chunks are general reference material about "
+    "what a given code means; they are retrieved because they're topically "
+    "related, NOT because they necessarily apply to a specific finding.\n"
+    "When explaining why a specific record/line failed: state the error code "
+    "ONLY if it is written inside that finding's own chunk text. If a "
+    "Validation Finding chunk has no bracketed code, say plainly that no "
+    "official CAT error code was determined for it — never borrow a code "
+    "number from a separate Error Code Catalog chunk just because it appears "
+    "elsewhere in the context; that would misattribute it."
 )
 
 

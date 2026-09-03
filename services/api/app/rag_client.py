@@ -57,7 +57,13 @@ def retrieve(question: str, top_k: int = 5, submission_id: int | None = None) ->
             priority_rows += db.search_by_section_title_prefix(conn, f'Error Code {m.group(1)}:', limit=2)
         if submission_id is not None:
             priority_rows += _finding_rows(conn, submission_id, question)
-        vector_rows = db.search(conn, embed_query(question), top_k=top_k)
+        # When findings/exact matches already anchor the answer, cap the
+        # supplementary vector search tighter - a full top_k of loosely-
+        # related general chunks (e.g. several unrelated "Error Code N:"
+        # catalog entries for a vague "why did it fail") gives the model
+        # more material to misattribute a code to the wrong finding.
+        vector_top_k = min(top_k, 2) if priority_rows else top_k
+        vector_rows = db.search(conn, embed_query(question), top_k=vector_top_k)
     finally:
         conn.close()
 
@@ -71,7 +77,7 @@ def retrieve(question: str, top_k: int = 5, submission_id: int | None = None) ->
     # priority_rows (findings + exact matches) are never trimmed for a
     # submission-scoped question - they're the point of asking; only the
     # supplementary vector-search rows are capped to top_k.
-    rows = rows[:len(priority_rows) + top_k]
+    rows = rows[:len(priority_rows) + vector_top_k]
 
     for r in rows:
         page = f' (p. {r["page_no"]})' if r['page_no'] else ''

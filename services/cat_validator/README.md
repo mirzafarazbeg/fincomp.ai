@@ -76,14 +76,28 @@ no code, in a compliance context.
   is explicitly Phase 2's harder half per `docs/ARCHITECTURE.md` and needs
   the Reporting Scenarios PDF's scenario logic, built incrementally per
   scenario with test fixtures - not attempted yet.
-- **Only tested against MENO** (New Order Event) fixtures so far
-  (`data/eval/cat_validator/`, `selftest.py`) - the other 87 event
+- **Fixtures cover MENO/MEOR only** (New Order, Order Route) so far
+  (`data/eval/cat_validator/`, `selftest.py`) - the other 86 event
   definitions load and should validate the same way since the logic is
-  entirely schema-driven, but haven't been exercised with real or synthetic
-  files yet. Worth building a fixture per event family (at least one Equity
-  and one Option event beyond MENO) before trusting this broadly.
-- **CSV delimiter edge cases**: the parser does a plain `line.split(',')`,
-  which matches the spec's stated CSV rules (no delimiter chars are allowed
-  inside field values, so no escaping/quoting to handle) - but hasn't been
-  tested against a real-world CAT submission file, only spec-example-derived
-  fixtures.
+  entirely schema-driven, but aren't individually fixture-tested. Worth
+  adding at least one Option event beyond that before trusting this broadly.
+
+**Validated at real scale**: run against a real ~608K-record, 146MB CAT
+Order Events file (CSV, multiple event types) in ~23 seconds, correctly
+flagging exactly the genuinely-bad records (a truly missing required field,
+one malformed timestamp) with no false positives - after fixing a real bug
+that surfaced only at this scale (see below). The plain `line.split(',')`
+CSV parsing (matches the spec's stated rules - no delimiter chars are
+allowed inside field values, so no escaping/quoting to handle) held up fine
+against real data. The real file itself isn't committed here (it's the
+user's own firm data); `data/eval/cat_validator/multi_digit_price.csv` is a
+regression fixture for the bug it caught.
+
+**Bug found and fixed via that real file**: the CAT spec's own
+`Numeric(a,b)` notation means "max `a` digits before the decimal, max `b`
+after" (Tech Spec Section 2.5.1) - NOT the SQL `NUMERIC(precision,scale)`
+convention where `precision` is the *total* digit count. The validator was
+built the SQL way, so e.g. `Price`'s `(10,8)` only allowed 2 integer digits
+before rejecting - normal 3-digit prices like `135.00` failed. This produced
+153,537 false-positive findings (~25% of records) on the real file before
+being caught and fixed (`rules._check_numeric`).

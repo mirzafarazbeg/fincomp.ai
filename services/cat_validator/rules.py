@@ -57,7 +57,15 @@ def _lookup_code(field_name: str) -> tuple[str | None, str | None]:
     return codes[0], (entry['severity'] if entry else None)
 
 
-def _check_numeric(value: str, precision: int | None, scale: int | None, allow_negative: bool) -> bool:
+def _check_numeric(value: str, max_int_digits: int | None, scale: int | None, allow_negative: bool) -> bool:
+    """`max_int_digits`/`scale` follow the CAT spec's own Numeric(a,b) convention
+    (Tech Spec Section 2.5.1): a = max digits BEFORE the decimal point, b = max
+    digits after - NOT the SQL NUMERIC(precision,scale) convention where
+    precision is the *total* digit count. Mixing these up rejects any value
+    with more integer digits than (a - b), which is wrong - e.g. it would
+    reject "135.00" against Price's (10,8) even though 135 is nowhere near
+    the spec's stated max of 9999999999.
+    """
     v = value
     if allow_negative and v.startswith('-'):
         v = v[1:]
@@ -70,7 +78,7 @@ def _check_numeric(value: str, precision: int | None, scale: int | None, allow_n
             int_part, frac_part = v.split('.', 1)
         if not int_part.isdigit() or not (frac_part == '' or frac_part.isdigit()):
             return False
-        if precision and len(int_part) > (precision - scale):
+        if max_int_digits and len(int_part) > max_int_digits:
             return False
         if len(frac_part) > scale:
             return False
@@ -79,7 +87,7 @@ def _check_numeric(value: str, precision: int | None, scale: int | None, allow_n
             return False
         if not v.isdigit():
             return False
-        if precision and len(v) > precision:
+        if max_int_digits and len(v) > max_int_digits:
             return False
     return True
 

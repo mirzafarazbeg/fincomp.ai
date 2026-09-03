@@ -36,6 +36,16 @@ CASES = [
         lambda findings: any(f.field == 'eventTimestamp' and 'not a valid Timestamp' in f.message for f in findings),
     ),
     (
+        # Regression guard: Numeric(a,b) in the CAT spec means "max a digits
+        # before the decimal, max b after" (Tech Spec Section 2.5.1) - not
+        # SQL NUMERIC(precision,scale) where precision is the total digit
+        # count. A price like 135.0000 against Price's (10,8) must pass;
+        # this caught a real bug (153K false positives on a ~600K-record
+        # real-world file) where it was being rejected.
+        'multi_digit_price.csv',
+        lambda findings: len(findings) == 0,
+    ),
+    (
         'unknown_event_type.csv',
         lambda findings: any('Unknown event type' in f.message for f in findings),
     ),

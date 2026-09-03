@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from services.cat_validator import parser, report, rules, store
+from services.cat_validator import linkage, parser, report, rules, store
 from services.rag import db
 
 
 def validate_and_store(file_path: str, filename: str) -> dict:
     records = parser.parse_file(file_path)
-    findings = rules.validate_records(records)
+    findings = rules.validate_records(records) + linkage.check_parent_child_linkage(records)
 
     conn = db.get_connection()
     try:

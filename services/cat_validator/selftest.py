@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import sys
 
-from services.cat_validator import parser, rules
+from services.cat_validator import linkage, parser, rules
 
 FIXTURES_DIR = 'data/eval/cat_validator'
 
@@ -49,6 +49,17 @@ CASES = [
         'unknown_event_type.csv',
         lambda findings: any('Unknown event type' in f.message for f in findings),
     ),
+    (
+        'child_order_orphan.csv',
+        lambda findings: any(
+            f.field == 'parentOrderID' and f.error_code == '3501' and 'does not match any orderID' in f.message
+            for f in findings
+        ),
+    ),
+    (
+        'child_order_linked.csv',
+        lambda findings: len(findings) == 0,
+    ),
 ]
 
 
@@ -57,7 +68,7 @@ def main() -> None:
     for filename, check in CASES:
         path = f'{FIXTURES_DIR}/{filename}'
         records = parser.parse_file(path)
-        findings = rules.validate_records(records)
+        findings = rules.validate_records(records) + linkage.check_parent_child_linkage(records)
         ok = check(findings)
         status = 'PASS' if ok else 'FAIL'
         print(f'[{status}] {filename}')

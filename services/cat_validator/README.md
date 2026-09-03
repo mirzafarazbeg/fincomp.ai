@@ -71,11 +71,26 @@ no code, in a compliance context.
   already loaded in `schema.py` (`name_value_pair_defs()`) but not yet wired
   into `rules.py` - validating handlingInstructions/timeInForce sub-fields
   is the natural next slice of this.
-- **No cross-record (linkage) checks yet** - Order ID lineage, route/trade
-  event sequencing, the "Linkage Discovery" error class (Appendix E.3). This
-  is explicitly Phase 2's harder half per `docs/ARCHITECTURE.md` and needs
-  the Reporting Scenarios PDF's scenario logic, built incrementally per
-  scenario with test fixtures - not attempted yet.
+- **Cross-record (linkage) checks: parent->child order linkage only so far**
+  (`linkage.py`). A Child Order event (MECO/MOCO/MLCO) or Internal Route
+  Accepted event (MEIR/MOIR/MLIR) must have a `parentOrderID`/
+  `parentOrderKeyDate` matching some other record's `orderID`/`orderKeyDate`
+  in the same file; if not, emits CAT error code 3501 ("Secondary Event ...
+  references an Order Key ... that does not exist"). Verified against the
+  real 608K-record file (3 real `MEIR` records, all correctly linked, 0 false
+  positives) and against synthetic orphan/linked fixtures
+  (`child_order_orphan.csv` / `child_order_linked.csv`).
+  Only checks linkage *within* the uploaded file - a parent order reported
+  in a different/earlier file will be flagged as missing, unlike real CAT
+  linkage discovery which also checks across previously-submitted files.
+  Extending this to check against other stored submissions in Postgres
+  (`cat_findings`/a future `cat_records` table) is the natural next step if
+  that proves too noisy.
+  Everything else in the "Linkage Discovery" error class (Appendix E.3) -
+  route/trade event sequencing, duplicate key detection, and the rest of
+  Phase 2's harder half per `docs/ARCHITECTURE.md` - still needs the
+  Reporting Scenarios PDF's scenario logic, built incrementally per
+  scenario with test fixtures. Not attempted yet.
 - **Fixtures cover MENO/MEOR only** (New Order, Order Route) so far
   (`data/eval/cat_validator/`, `selftest.py`) - the other 86 event
   definitions load and should validate the same way since the logic is

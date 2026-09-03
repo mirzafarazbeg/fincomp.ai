@@ -9,6 +9,17 @@
 #   !bash scripts/colab_setup.sh
 set -euo pipefail
 
+echo "== Adding the PostgreSQL apt repository (PGDG) =="
+# Colab's base image is Ubuntu 22.04 (jammy), whose default repos only ship
+# postgresql-14 and have no pgvector package at all. postgresql-16 and
+# postgresql-16-pgvector only exist in the official PGDG repo.
+apt-get install -y -qq curl ca-certificates gnupg
+install -d /usr/share/postgresql-common/pgdg
+curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail \
+    https://www.postgresql.org/media/keys/ACCC4CF8.asc
+echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(. /etc/os-release && echo "$VERSION_CODENAME")-pgdg main" \
+    > /etc/apt/sources.list.d/pgdg.list
+
 echo "== Installing Postgres 16 + pgvector + poppler-utils =="
 apt-get update -qq
 apt-get install -y -qq postgresql-16 postgresql-16-pgvector poppler-utils

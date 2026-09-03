@@ -21,7 +21,8 @@ spec citation, not a model's opinion.
 - [x] CAT Appendix E error code catalog extracted (`data/cat_reference/cat_error_codes.json`)
 - [x] CAT Appendix G data dictionary extracted (`data/cat_reference/cat_data_dictionary.json`) — 132 fields, types + descriptions; Choice-field allowed values still need structuring (see `data/cat_reference/README.md`)
 - [x] **Phase 1 (Document Intelligence) verified end-to-end on Colab (L4 GPU)**: chunker (`services/rag/chunker.py`), embedding (`services/rag/embed.py`), Postgres+pgvector storage (`services/rag/db.py`), ingestion (`services/rag/ingest.py`), FastAPI `/query` + chat UI (`services/api/`), hybrid exact-match short-circuit for ID lookups (`db.search_by_section_title_prefix`), retrieval eval harness (`services/rag/eval.py`, `data/eval/questions.json`) — **13/13 passing** with real embeddings (all-MiniLM-L6-v2) against all four ingested sources (1,751 chunks). Generation via Ollama (`qwen2.5:7b-instruct-q4_K_M`) confirmed working on the L4. Setup path: `docs/COLAB_SETUP.md` / `scripts/colab_setup.sh`.
-- [ ] Phase 2 (CAT File Validator) and everything after it
+- [x] **Phase 2 (CAT File Validator) v1**: schema-driven CSV/JSON parser and field-level rules engine (`services/cat_validator/`), built against the official CAT Industry Member schema (`docs/specs/cat_im_schema_v4.2.0.json`) rather than PDF-extracted tables. Emits real CAT error codes where unambiguous. 7/7 on its regression fixtures (`services/cat_validator/selftest.py`). Known gaps (Conditional-field presence, compound-field internals, cross-record linkage checks) documented in `services/cat_validator/README.md` — not yet wired into the RAG/chat layer for narration.
+- [ ] Everything after Phase 2 v1 (see gaps above, plus Phase 4/Phase 3)
 
 ## Build order
 

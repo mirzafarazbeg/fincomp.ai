@@ -7,9 +7,18 @@
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-900 h-screen flex flex-col">
-  <header class="border-b border-slate-200 bg-white px-4 py-3">
-    <h1 class="text-lg font-semibold">ComplianceGPT</h1>
-    <p class="text-sm text-slate-500">CAT / SEC / FINRA reporting assistant</p>
+  <header class="border-b border-slate-200 bg-white px-4 py-3 flex items-center justify-between">
+    <div>
+      <h1 class="text-lg font-semibold">ComplianceGPT</h1>
+      <p class="text-sm text-slate-500">CAT / SEC / FINRA reporting assistant</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span id="submissionBadge" class="hidden text-xs bg-amber-100 text-amber-800 rounded-full px-3 py-1"></span>
+      <label class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 cursor-pointer hover:bg-slate-100">
+        Upload CAT file
+        <input id="fileInput" type="file" accept=".csv,.json,.txt" class="hidden" />
+      </label>
+    </div>
   </header>
 
   <main id="thread" class="flex-1 overflow-y-auto px-4 py-6 space-y-4 max-w-3xl w-full mx-auto"></main>
@@ -34,6 +43,10 @@
 const thread = document.getElementById('thread');
 const form = document.getElementById('form');
 const input = document.getElementById('question');
+const fileInput = document.getElementById('fileInput');
+const submissionBadge = document.getElementById('submissionBadge');
+
+let submissionId = null;
 
 function addMessage(role, html) {
   const wrap = document.createElement('div');
@@ -60,6 +73,43 @@ function renderChunks(chunks) {
   return `<details class="mt-1"><summary class="text-xs text-slate-400 cursor-pointer">${chunks.length} source(s)</summary><ul class="list-disc pl-4 mt-1 space-y-0.5">${items}</ul></details>`;
 }
 
+function renderFindings(data) {
+  const rows = data.findings.map(f => {
+    const code = f.error_code ? `[${f.error_code}]` : '[no CAT code]';
+    const sevClass = f.severity === 'Warning' ? 'text-amber-700' : 'text-red-700';
+    return `<li class="${sevClass}">line ${f.line}${f.event_type ? ' (' + escapeHtml(f.event_type) + ')' : ''} ${escapeHtml(code)}: ${escapeHtml(f.message)}</li>`;
+  }).join('');
+  const summary = data.findings.length === 0
+    ? 'No findings — all records passed validation.'
+    : `${data.error_count} error(s), ${data.warning_count} warning(s) across ${data.record_count} record(s).`;
+  return `<div class="font-medium">${escapeHtml(data.filename)} — ${summary}</div>` +
+    (rows ? `<ul class="text-xs space-y-1 list-disc pl-4">${rows}</ul>` : '') +
+    `<div class="text-xs text-slate-400 mt-1">Ask a follow-up like "why did record 1 fail?" — it'll use these findings as context.</div>`;
+}
+
+fileInput.addEventListener('change', async () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  addMessage('user', `Uploaded <code>${escapeHtml(file.name)}</code> for CAT validation`);
+  const pending = addMessage('assistant', '<span class="text-slate-400">Validating…</span>');
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('/validate', { method: 'POST', body: formData });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    submissionId = data.submission_id;
+    submissionBadge.textContent = `Scoped to ${data.filename}`;
+    submissionBadge.classList.remove('hidden');
+    pending.innerHTML = renderFindings(data);
+  } catch (err) {
+    pending.innerHTML = `<span class="text-red-600">Error: ${escapeHtml(err.message)}</span>`;
+  } finally {
+    fileInput.value = '';
+  }
+});
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const question = input.value.trim();
@@ -73,7 +123,7 @@ form.addEventListener('submit', async (e) => {
     const res = await fetch('/query', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question, top_k: 5 }),
+      body: JSON.stringify({ question, top_k: 5, submission_id: submissionId }),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();

@@ -21,8 +21,9 @@ spec citation, not a model's opinion.
 - [x] CAT Appendix E error code catalog extracted (`data/cat_reference/cat_error_codes.json`)
 - [x] CAT Appendix G data dictionary extracted (`data/cat_reference/cat_data_dictionary.json`) — 132 fields, types + descriptions; Choice-field allowed values still need structuring (see `data/cat_reference/README.md`)
 - [x] **Phase 1 (Document Intelligence) verified end-to-end on Colab (L4 GPU)**: chunker (`services/rag/chunker.py`), embedding (`services/rag/embed.py`), Postgres+pgvector storage (`services/rag/db.py`), ingestion (`services/rag/ingest.py`), FastAPI `/query` + chat UI (`services/api/`), hybrid exact-match short-circuit for ID lookups (`db.search_by_section_title_prefix`), retrieval eval harness (`services/rag/eval.py`, `data/eval/questions.json`) — **13/13 passing** with real embeddings (all-MiniLM-L6-v2) against all four ingested sources (1,751 chunks). Generation via Ollama (`qwen2.5:7b-instruct-q4_K_M`) confirmed working on the L4. Setup path: `docs/COLAB_SETUP.md` / `scripts/colab_setup.sh`.
-- [x] **Phase 2 (CAT File Validator) v1**: schema-driven CSV/JSON parser and field-level rules engine (`services/cat_validator/`), built against the official CAT Industry Member schema (`docs/specs/cat_im_schema_v4.2.0.json`) rather than PDF-extracted tables. Emits real CAT error codes where unambiguous. 7/7 on its regression fixtures (`services/cat_validator/selftest.py`). Known gaps (Conditional-field presence, compound-field internals, cross-record linkage checks) documented in `services/cat_validator/README.md` — not yet wired into the RAG/chat layer for narration.
-- [ ] Everything after Phase 2 v1 (see gaps above, plus Phase 4/Phase 3)
+- [x] **Phase 2 (CAT File Validator) v1**: schema-driven CSV/JSON parser and field-level rules engine (`services/cat_validator/`), built against the official CAT Industry Member schema (`docs/specs/cat_im_schema_v4.2.0.json`) rather than PDF-extracted tables. Emits real CAT error codes where unambiguous. 7/7 on its regression fixtures (`services/cat_validator/selftest.py`). Known gaps (Conditional-field presence, compound-field internals, cross-record linkage checks) documented in `services/cat_validator/README.md`.
+- [x] **Phase 2 wired into chat/RAG**: `POST /validate` (file upload) parses+validates+persists a run (`services/cat_validator/store.py`); `POST /query` takes an optional `submission_id` and grounds the answer in that run's findings (plus the matching Appendix E error-code explanation for each finding, and the specific line if the question names one, e.g. "why did record 45 fail"). Chat UI has a file-upload control. Verified through the actual FastAPI app (not just the underlying functions) with a stubbed embedding.
+- [ ] Everything after this (Conditional-field logic, cross-record linkage checks, Phase 4, Phase 3 - see gaps above)
 
 ## Build order
 
@@ -108,6 +109,12 @@ document_chunks       (id, document_id, section_ref, text, embedding vector, pag
 cat_submissions       (id, filename, imid, submitted_at, status)
 cat_records            (id, submission_id, event_type, raw_line, parsed jsonb, line_no)
 cat_findings           (id, record_id, error_code, severity, field, message)
+  [implemented in services/cat_validator/store.py as cat_submissions
+   (id, filename, record_count, submitted_at) and cat_findings (id,
+   submission_id, line_no, event_type, field, error_code, severity,
+   message) - no separate cat_records table yet; findings reference the
+   line number directly rather than a parsed-record row. Revisit if a
+   later feature needs the full parsed record, not just the finding text.]
 
 fix_sessions          (id, source_file, begin_string, sender_comp_id, target_comp_id, started_at, ended_at)
 fix_events             (id, session_id, seq_num, msg_type, tags jsonb, ts)

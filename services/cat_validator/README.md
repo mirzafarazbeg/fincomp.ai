@@ -29,7 +29,20 @@ python3 -m services.cat_validator.selftest                       # regression ch
   Required fields, and value format for whatever's populated (Choice
   membership, Boolean, Timestamp, Numeric-family precision/scale, Text/
   Alphanumeric length and charset, and the canonical ID/Symbol types).
-- `report.py` / `cli.py` turn findings into text or JSON output.
+- `report.py` / `cli.py` turn findings into text or JSON output, standalone
+  (no DB needed) for command-line use.
+- `store.py` persists a validation run (submission + findings) to the same
+  Postgres instance the RAG knowledge base uses (`cat_submissions`,
+  `cat_findings` - see `docs/ARCHITECTURE.md`'s data model), so the chat
+  layer can answer follow-ups grounded in a specific run. Wired in via
+  `services/api/app/cat_validate_client.py` (`POST /validate`, file upload)
+  and `services/api/app/rag_client.py` (`retrieve(..., submission_id=...)`,
+  used by `POST /query`) - a chat question with a `submission_id` gets that
+  run's findings as priority context (capped at 10, or scoped to one line if
+  the question names it, e.g. "why did record 45 fail"), plus the matching
+  Appendix E error-code explanation for each finding with a code, on top of
+  the normal spec retrieval. The chat UI (`services/api/static/index.html`)
+  has a file-upload control that does this end to end.
 
 ## Design choice: emit real codes only when unambiguous
 

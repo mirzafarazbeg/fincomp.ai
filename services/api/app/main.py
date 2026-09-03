@@ -1,13 +1,14 @@
 from __future__ import annotations
 
+import tempfile
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from services.api.app import llm, rag_client
+from services.api.app import cat_validate_client, llm, rag_client
 
 app = FastAPI(title='ComplianceGPT API')
 
@@ -19,6 +20,7 @@ if STATIC_DIR.exists():
 class QueryRequest(BaseModel):
     question: str
     top_k: int = 5
+    submission_id: int | None = None  # scopes the answer to a CAT file validation run
 
 
 class QueryResponse(BaseModel):
@@ -42,7 +44,7 @@ def index():
 
 @app.post('/query', response_model=QueryResponse)
 def query(req: QueryRequest):
-    chunks = rag_client.retrieve(req.question, top_k=req.top_k)
+    chunks = rag_client.retrieve(req.question, top_k=req.top_k, submission_id=req.submission_id)
     if llm.is_configured():
         answer = llm.generate(req.question, chunks)
         generated = True
@@ -50,3 +52,14 @@ def query(req: QueryRequest):
         answer = None
         generated = False
     return QueryResponse(answer=answer, chunks=chunks, generated=generated)
+
+
+@app.post('/validate')
+async def validate(file: UploadFile):
+    with tempfile.NamedTemporaryFile(suffix='.dat', delete=False) as tmp:
+        tmp.write(await file.read())
+        tmp_path = tmp.name
+    try:
+        return cat_validate_client.validate_and_store(tmp_path, file.filename or 'upload')
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)

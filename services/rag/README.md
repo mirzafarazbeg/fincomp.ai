@@ -18,12 +18,16 @@ JSON, so they read naturally alongside the PDF-derived chunks.
   turns out to matter for how often users click through citations vs. just
   reading the answer.
 - **Embedding model requires internet access** (downloads
-  `sentence-transformers/all-MiniLM-L6-v2` from Hugging Face on first run)
-  — this couldn't be verified end-to-end in the sandboxed dev session this
-  was built in (network policy blocks huggingface.co there); the DB/API
-  plumbing was verified with a stubbed embedding function instead. Should
-  work as-is on Colab / a normal dev machine with internet access — flag it
-  if it doesn't.
+  `sentence-transformers/all-MiniLM-L6-v2` from Hugging Face on first run) —
+  couldn't be verified in the sandboxed dev session this was originally built
+  in (network policy blocks huggingface.co there), but has since been
+  verified end-to-end on Colab (L4 GPU): 13/13 on the retrieval eval with
+  real embeddings. Dense vector similarity alone was unreliable for exact
+  numeric ID lookups (e.g. "error code 2019" vs. a neighboring code like
+  2250) until the hybrid exact-match short-circuit
+  (`db.search_by_section_title_prefix`, wired in from `rag_client.retrieve`)
+  was added — worth keeping in mind if a similar exact-lookup case shows up
+  elsewhere (e.g. field names) and starts failing.
 - **Front matter skipped**: each PDF's cover/TOC/change-log pages are
   skipped via a hardcoded `start_page` in `ingest.py`'s `SOURCES` list. If a
   future spec revision changes page counts, re-check those offsets (or make
@@ -34,7 +38,6 @@ JSON, so they read naturally alongside the PDF-derived chunks.
 
 `python3 -m services.rag.eval` checks retrieval only (no LLM/GPU needed) —
 for each question in `data/eval/questions.json`, it verifies a chunk
-matching the expected citation appears in the top-k results. This hasn't
-been run against real embeddings yet (see limitation above) — do that first
-after setting up on a machine with internet access, before trusting the
-retrieval quality.
+matching the expected citation appears in the top-k results. Currently
+13/13 against real embeddings (verified on Colab). Re-run this after any
+change to the chunker, embedding model, or ingested sources.

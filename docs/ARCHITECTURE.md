@@ -20,8 +20,8 @@ spec citation, not a model's opinion.
 - [x] Specs committed (`docs/specs/`)
 - [x] CAT Appendix E error code catalog extracted (`data/cat_reference/cat_error_codes.json`)
 - [x] CAT Appendix G data dictionary extracted (`data/cat_reference/cat_data_dictionary.json`) — 132 fields, types + descriptions; Choice-field allowed values still need structuring (see `data/cat_reference/README.md`)
-- [x] Phase 1 scaffolded: chunker (`services/rag/chunker.py`), embedding (`services/rag/embed.py`), Postgres+pgvector storage (`services/rag/db.py`), ingestion (`services/rag/ingest.py`), FastAPI `/query` + chat UI (`services/api/`), retrieval eval harness (`services/rag/eval.py`, `data/eval/questions.json`). DB/API plumbing verified end-to-end with a stubbed embedding function; real embedding model needs to be verified on a machine with internet access (see `services/rag/README.md`).
-- [ ] Everything else below
+- [x] **Phase 1 (Document Intelligence) verified end-to-end on Colab (L4 GPU)**: chunker (`services/rag/chunker.py`), embedding (`services/rag/embed.py`), Postgres+pgvector storage (`services/rag/db.py`), ingestion (`services/rag/ingest.py`), FastAPI `/query` + chat UI (`services/api/`), hybrid exact-match short-circuit for ID lookups (`db.search_by_section_title_prefix`), retrieval eval harness (`services/rag/eval.py`, `data/eval/questions.json`) — **13/13 passing** with real embeddings (all-MiniLM-L6-v2) against all four ingested sources (1,751 chunks). Generation via Ollama (`qwen2.5:7b-instruct-q4_K_M`) confirmed working on the L4. Setup path: `docs/COLAB_SETUP.md` / `scripts/colab_setup.sh`.
+- [ ] Phase 2 (CAT File Validator) and everything after it
 
 ## Build order
 
